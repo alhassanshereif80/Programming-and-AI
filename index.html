@@ -276,12 +276,7 @@ src="https://www.facebook.com/tr?id=1414285990572286&ev=PageView&noscript=1"
   }
   .mini-input:focus{outline:none; border-color:var(--teal);}
   .video-wrap{position:relative; width:100%; aspect-ratio:16/9; border-radius:10px; overflow:hidden; background:#000;}
-  .video-wrap iframe{position:absolute; inset:0; width:100%; height:100%; border:0;}
-  .drive-shield-corner{
-    position:absolute; top:0; left:0; right:0; z-index:5; cursor:default;
-    height:clamp(48px, 20%, 90px);
-    background:linear-gradient(180deg, rgba(7,8,26,0.98) 55%, rgba(7,8,26,0.6) 82%, transparent 100%);
-  }
+  .video-wrap iframe, .video-wrap video{position:absolute; inset:0; width:100%; height:100%; border:0; background:#000;}
   .video-poster{
     position:absolute; inset:0; cursor:pointer;
     background:
@@ -1041,10 +1036,28 @@ function initShieldedVideos(container){
       const driveId = wrap.dataset.driveId;
       const title = wrap.dataset.videoTitle;
       wrap.innerHTML = `
-        <iframe src="https://drive.google.com/file/d/${driveId}/preview" title="${title}"
-          allow="autoplay" allowfullscreen loading="lazy"></iframe>
-        <div class="drive-shield-corner" oncontextmenu="return false;"></div>
+        <video
+          src="https://drive.google.com/uc?export=download&id=${driveId}"
+          title="${title}"
+          controls
+          controlslist="nodownload noremoteplayback"
+          disablepictureinpicture
+          playsinline
+          autoplay
+          oncontextmenu="return false;">
+        </video>
       `;
+      const vid = wrap.querySelector('video');
+      // If Google throws the "can't scan for viruses" interstitial page instead
+      // of the raw video (can happen with larger files), the <video> element
+      // fails to load — fall back to the old Drive preview player rather than
+      // leaving the student with a blank black box.
+      vid.addEventListener('error', () => {
+        wrap.innerHTML = `
+          <iframe src="https://drive.google.com/file/d/${driveId}/preview" title="${title}"
+            allow="autoplay" allowfullscreen loading="lazy"></iframe>
+        `;
+      }, { once: true });
     }, { once: true });
   });
 }
