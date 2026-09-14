@@ -295,6 +295,13 @@ src="https://www.facebook.com/tr?id=1414285990572286&ev=PageView&noscript=1"
   .video-play-btn svg{width:26px; height:26px; fill:#fff; margin-inline-start:3px;}
   .video-poster:hover .video-play-btn{transform:scale(1.08);}
 
+  /* Chrome/Edge add their own hover icons (download, cast) directly on top of
+     <video> regardless of the controlsList attribute in some versions — kill
+     them outright so nothing floats over the corner of the player. */
+  .video-wrap video::-internal-media-controls-download-button{display:none !important;}
+  .video-wrap video::-internal-media-controls-overlay-cast-button{display:none !important;}
+  .video-wrap video::-webkit-media-controls-overlay-enclosure{display:none !important;}
+
 
   .whatsapp-btn{
     display:inline-flex; align-items:center; gap:10px; background:#25D366; color:#fff; font-weight:700;
@@ -362,6 +369,30 @@ src="https://www.facebook.com/tr?id=1414285990572286&ev=PageView&noscript=1"
     display:none; align-items:center; justify-content:center; padding:20px;
   }
   #homework-overlay.open{display:flex;}
+  #solutions-overlay{
+    position:fixed; inset:0; z-index:100;
+    background:rgba(4,5,15,0.72);
+    backdrop-filter:blur(4px);
+    display:none; align-items:center; justify-content:center; padding:20px;
+  }
+  #solutions-overlay.open{display:flex;}
+  #solutions-overlay .gate-card{max-width:640px; max-height:92vh; overflow-y:auto;}
+  #results-overlay{
+    position:fixed; inset:0; z-index:100;
+    background:rgba(4,5,15,0.72);
+    backdrop-filter:blur(4px);
+    display:none; align-items:center; justify-content:center; padding:20px;
+  }
+  #results-overlay.open{display:flex;}
+  #results-overlay .gate-card{max-width:560px; max-height:92vh; overflow-y:auto;}
+  .res-row{
+    display:flex; justify-content:space-between; align-items:center; gap:10px;
+    border:1px solid var(--border); border-radius:10px; padding:10px 14px; margin-bottom:8px; font-size:13px;
+  }
+  .res-row .res-lesson{flex:1; line-height:1.6;}
+  .res-row .res-score{font-weight:700; white-space:nowrap;}
+  .res-row .res-score.good{color:#3fbf6a;}
+  .res-row .res-score.bad{color:#e5555a;}
   .quick-action-card{
     background:var(--bg-elevated); border:1px solid var(--border); border-radius:14px;
     padding:22px 26px; margin-top:24px;
@@ -546,6 +577,38 @@ src="https://www.facebook.com/tr?id=1414285990572286&ev=PageView&noscript=1"
   </div>
 </div>
 
+<div id="solutions-overlay">
+  <div class="gate-card">
+    <button type="button" class="gate-close" id="solutions-close" aria-label="close">✕</button>
+    <div class="gate-title" data-i18n="solTitle">حلول الواجبات</div>
+    <div class="gate-sub" data-i18n="solSub">اختر الدرس وشوف فيديو حل الواجب بتاعه على يوتيوب — متاح للكل من غير أي قيود.</div>
+
+    <div class="field" style="margin-bottom:18px;">
+      <label style="display:block; font-size:13px; color:var(--text-muted); margin-bottom:7px;" data-i18n="solLabelLesson">اختر الدرس</label>
+      <select id="sol-lesson" class="mini-input"></select>
+    </div>
+
+    <div id="sol-video-wrap" class="video-wrap" style="display:none;"></div>
+    <div id="sol-empty-note" style="text-align:center; padding:30px 0; color:var(--text-muted); font-size:13.5px;" data-i18n="solEmptyNote">اختر درسًا لتشاهد حل واجبه.</div>
+  </div>
+</div>
+
+<div id="results-overlay">
+  <div class="gate-card">
+    <button type="button" class="gate-close" id="results-close" aria-label="close">✕</button>
+    <div class="gate-title" data-i18n="resTitle">نتيجتي</div>
+    <div class="gate-sub" data-i18n="resSub">اكتب كودك عشان تشوف كل درجاتك في الواجبات اللي سلّمتها.</div>
+
+    <div style="display:flex; gap:8px; margin-bottom:16px;">
+      <input type="text" id="res-code" class="mini-input" dir="ltr" style="flex:1;" placeholder="مثال: 220271691">
+      <button type="button" class="btn-primary" id="res-search-btn" data-i18n="resSearchBtn">استعلام</button>
+    </div>
+
+    <div id="res-status" style="font-size:13px; text-align:center; margin-bottom:10px;"></div>
+    <div id="res-list"></div>
+  </div>
+</div>
+
 <div id="site-content">
 
 <header>
@@ -561,6 +624,8 @@ src="https://www.facebook.com/tr?id=1414285990572286&ev=PageView&noscript=1"
     <div class="nav-links" id="nav-links">
       <a href="#courses" data-i18n="navCourses">📚 الكورسات</a>
       <a href="#" id="nav-homework" data-i18n="navHomework">📮 تسليم الواجب</a>
+      <a href="#" id="nav-results" data-i18n="navResults">📊 نتيجتي</a>
+      <a href="#" id="nav-solutions" data-i18n="navSolutions">🎥 حلول الواجبات</a>
       <a href="#subscribe" data-i18n="navSubscribe">💳 الاشتراك</a>
       <a href="#contact" data-i18n="navContact">💬 تواصل</a>
       <a href="#about" data-i18n="navAbout">👨‍🏫 عن المعلم</a>
@@ -782,7 +847,13 @@ const i18n = {
     gateSubmit:'تم التسجيل، رجوع للموقع', gateNote:'بياناتك بتتحفظ مباشرة في نموذج جوجل الخاص بمعلمك، ومش بتتشارك مع أي طرف تاني.',
     titlebarPath:'~/alhassan-shereif/برمجة_وذكاء_اصطناعي',
     navAbout:'👨‍🏫 عن المعلم', navCourses:'📚 الكورسات', navContact:'💬 تواصل', navCta:'./ابدأ_التعلم', navRegister:'تسجيل البيانات', navRegistered:'بياناتك متسجلة ✓',
-    navHomework:'📮 تسليم الواجب', navSubscribe:'💳 الاشتراك',
+    navHomework:'📮 تسليم الواجب', navSubscribe:'💳 الاشتراك', navSolutions:'🎥 حلول الواجبات',
+    solTitle:'حلول الواجبات', solSub:'اختر الدرس وشوف فيديو حل الواجب بتاعه على يوتيوب — متاح للكل من غير أي قيود.',
+    solLabelLesson:'اختر الدرس', solLessonPlaceholder:'-- اختر الدرس --',
+    solEmptyNote:'اختر درسًا لتشاهد حل واجبه.', solNoVideoNote:'لسه معملناش حل الواجب بتاع الدرس ده.',
+    navResults:'📊 نتيجتي', resTitle:'نتيجتي', resSub:'اكتب كودك عشان تشوف كل درجاتك في الواجبات اللي سلّمتها.',
+    resSearchBtn:'استعلام', resMissingCode:'اكتب الكود الأول.', resSearching:'جارِ البحث...',
+    resNoResults:'مفيش أي واجبات متسجلة بالكود ده لسه.', resNoMcq:'—', resError:'حصل خطأ، جرّب تاني.',
     hwTitle:'تسليم الواجب', hwSub:'املأ النموذج التالي عشان تسلّم واجبك، وبعد ما تخلّص تقدر تقفل الشاشة دي عادي.',
     hwCardTitle:'خلّصت واجبك؟', hwCardSub:'سلّمه من هنا مباشرة، وهيتحفظ في الدرايف بتاعنا على طول.', hwCardBtn:'📮 تسليم الواجب',
     hwLabelName:'الاسم ثلاثي', hwLabelEmail:'البريد الإلكتروني', hwLabelCode:'كود الطالب', hwLabelLesson:'اختر الدرس اللي هتسلّم واجبه', hwLabelFile:'ملف إجابات الأسئلة المقالية (يمكن اختيار أكتر من ملف)',
@@ -861,7 +932,13 @@ const i18n = {
     gateSubmit:"I've registered — back to site", gateNote:"Your info goes straight into your teacher's Google Form and isn't shared with anyone else.",
     titlebarPath:'~/alhassan-shereif/programming_and_ai',
     navAbout:'👨‍🏫 About', navCourses:'📚 Courses', navContact:'💬 Contact', navCta:'./start_learning', navRegister:'Register', navRegistered:'Registered ✓',
-    navHomework:'📮 Submit Homework', navSubscribe:'💳 Subscribe',
+    navHomework:'📮 Submit Homework', navSubscribe:'💳 Subscribe', navSolutions:'🎥 Homework Solutions',
+    solTitle:'Homework Solutions', solSub:'Pick a lesson to watch its homework solution on YouTube — open to everyone, no restrictions.',
+    solLabelLesson:'Pick a lesson', solLessonPlaceholder:'-- Pick a lesson --',
+    solEmptyNote:'Pick a lesson to watch its solution.', solNoVideoNote:"This lesson's solution isn't up yet.",
+    navResults:'📊 My Results', resTitle:'My Results', resSub:'Enter your code to see all your scores across the homework you\'ve submitted.',
+    resSearchBtn:'Search', resMissingCode:'Enter your code first.', resSearching:'Searching...',
+    resNoResults:'No homework found for this code yet.', resNoMcq:'—', resError:'Something went wrong, please try again.',
     hwTitle:'Submit Homework', hwSub:"Fill in the form below to submit your homework — once you're done, you can just close this.",
     hwCardTitle:'Finished your homework?', hwCardSub:"Submit it right here — it'll be saved straight to our Drive.", hwCardBtn:'📮 Submit Homework',
     hwLabelName:'Full name (three parts)', hwLabelEmail:'Email address', hwLabelCode:'Student code', hwLabelLesson:'Pick the lesson you\'re submitting', hwLabelFile:'Essay-answer files (you can select more than one)',
@@ -974,6 +1051,7 @@ function applyI18n(lang){
     populateHwLessonSelect();
     updateHwFileLabel(document.getElementById('hw-lesson').value);
   }
+  if(document.getElementById('sol-lesson')) populateSolutionsLessonSelect();
 }
 
 document.getElementById('lang-toggle').addEventListener('click', ()=>{
@@ -1048,6 +1126,8 @@ function initShieldedVideos(container){
         </video>
       `;
       const vid = wrap.querySelector('video');
+      vid.setAttribute('controlsList', 'nodownload noremoteplayback');
+      vid.disablePictureInPicture = true;
       // If Google throws the "can't scan for viruses" interstitial page instead
       // of the raw video (can happen with larger files), the <video> element
       // fails to load — fall back to the old Drive preview player rather than
@@ -1160,6 +1240,35 @@ async function loadLessonVideos(){
       if(row[idIdx] && row[driveIdx]) lessonVideos[row[idIdx].trim()] = row[driveIdx].trim();
     }
   }catch(e){ console.warn('Could not load lesson videos sheet', e); }
+}
+
+/* Homework SOLUTION videos — unlike the lesson videos above, these are meant to
+   be open to everyone (no unit code, no subscription check). Paste the
+   published CSV link for a sheet with columns: lesson_id, youtube_url. */
+const HOMEWORK_SOLUTIONS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR0BykBJ5aRspVPmvV_iJur0oP-QESX2tIZeUz3_-H8Vjs2MoCbZn8_IIk9y8jwPNbIO-NYz4Dm1ADs/pub?gid=0&single=true&output=csv';
+let homeworkSolutions = {};
+
+async function loadHomeworkSolutions(){
+  if(!HOMEWORK_SOLUTIONS_CSV_URL) return;
+  try{
+    const { header, rows } = await fetchCsvRows(HOMEWORK_SOLUTIONS_CSV_URL);
+    const idIdx = header.indexOf('lesson_id');
+    const urlIdx = header.indexOf('youtube_url');
+    if(idIdx === -1 || urlIdx === -1) return;
+    const map = {};
+    for(let i = 1; i < rows.length; i++){
+      const row = rows[i];
+      const id = (row[idIdx] || '').trim();
+      const url = (row[urlIdx] || '').trim();
+      if(id && url) map[id] = url;
+    }
+    homeworkSolutions = map;
+  }catch(e){ console.warn('Could not load homework solutions sheet', e); }
+}
+
+function extractYoutubeId(url){
+  const m = url.match(/(?:youtube\.com\/watch\?v=|youtube\.com\/embed\/|youtu\.be\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/);
+  return m ? m[1] : null;
 }
 
 async function loadSubscribers(){
@@ -1447,6 +1556,135 @@ const hwForm = document.getElementById('hw-form');
 const hwClosedState = document.getElementById('hw-closed-state');
 const hwStatus = document.getElementById('hw-status');
 const hwSubmitBtn = document.getElementById('hw-submit-btn');
+
+/* ---------- homework SOLUTIONS modal (public, no gating at all) ---------- */
+const solutionsOverlay = document.getElementById('solutions-overlay');
+
+function populateSolutionsLessonSelect(){
+  const sel = document.getElementById('sol-lesson');
+  if(!sel) return;
+  const dict = i18n[currentLang];
+  const prevValue = sel.value;
+  sel.innerHTML = '';
+  const placeholder = document.createElement('option');
+  placeholder.value = '';
+  placeholder.disabled = true;
+  placeholder.selected = true;
+  placeholder.textContent = dict.solLessonPlaceholder;
+  sel.appendChild(placeholder);
+
+  curriculum.forEach(unit => {
+    const og = document.createElement('optgroup');
+    og.label = currentLang === 'ar' ? unit.title_ar : unit.title_en;
+    unit.lessons.forEach(lesson => {
+      const opt = document.createElement('option');
+      opt.value = lesson.id;
+      opt.textContent = lesson.id + ' — ' + (currentLang === 'ar' ? lesson.title_ar : lesson.title_en);
+      og.appendChild(opt);
+    });
+    sel.appendChild(og);
+  });
+
+  if(prevValue) sel.value = prevValue;
+}
+
+function renderSolutionVideo(lessonId){
+  const wrap = document.getElementById('sol-video-wrap');
+  const emptyNote = document.getElementById('sol-empty-note');
+  const url = lessonId ? homeworkSolutions[lessonId] : null;
+  const videoId = url ? extractYoutubeId(url) : null;
+  if(videoId){
+    wrap.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}" title="Homework solution" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>`;
+    wrap.style.display = 'block';
+    emptyNote.style.display = 'none';
+  } else {
+    wrap.style.display = 'none';
+    wrap.innerHTML = '';
+    emptyNote.style.display = 'block';
+    emptyNote.textContent = lessonId ? i18n[currentLang].solNoVideoNote : i18n[currentLang].solEmptyNote;
+  }
+}
+
+function openSolutionsModal(e){
+  if(e) e.preventDefault();
+  populateSolutionsLessonSelect();
+  renderSolutionVideo('');
+  solutionsOverlay.classList.add('open');
+}
+function closeSolutionsModal(){ solutionsOverlay.classList.remove('open'); }
+
+document.getElementById('sol-lesson').addEventListener('change', (e) => {
+  renderSolutionVideo(e.target.value);
+});
+
+/* ---------- "my results" modal (student score lookup) ---------- */
+const resultsOverlay = document.getElementById('results-overlay');
+
+function openResultsModal(e){
+  if(e) e.preventDefault();
+  document.getElementById('res-code').value = '';
+  document.getElementById('res-status').textContent = '';
+  document.getElementById('res-list').innerHTML = '';
+  resultsOverlay.classList.add('open');
+}
+function closeResultsModal(){ resultsOverlay.classList.remove('open'); }
+
+async function runResultsLookup(){
+  const dict = i18n[currentLang];
+  const code = document.getElementById('res-code').value.trim();
+  const status = document.getElementById('res-status');
+  const list = document.getElementById('res-list');
+  list.innerHTML = '';
+
+  if(!code){
+    status.style.color = '#e5555a';
+    status.textContent = dict.resMissingCode;
+    return;
+  }
+  if(!HOMEWORK_SCRIPT_URL){
+    status.style.color = '#e5555a';
+    status.textContent = dict.hwNotConfigured;
+    return;
+  }
+
+  status.style.color = 'var(--text-muted)';
+  status.textContent = dict.resSearching;
+
+  try{
+    const res = await fetch(HOMEWORK_SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'lookup', code: code })
+    });
+    const result = await res.json();
+    if(result.status !== 'success'){
+      throw new Error(result.message || 'lookup failed');
+    }
+    const rows = result.results || [];
+    if(rows.length === 0){
+      status.style.color = 'var(--text-muted)';
+      status.textContent = dict.resNoResults;
+      return;
+    }
+    status.textContent = '';
+    list.innerHTML = rows.map(r => {
+      const scoreOk = r.mcqTotal && (r.mcqScore / r.mcqTotal) >= 0.5;
+      const scoreText = (r.mcqScore !== '' && r.mcqTotal !== '') ? `${r.mcqScore} / ${r.mcqTotal}` : dict.resNoMcq;
+      return `
+        <div class="res-row">
+          <span class="res-lesson">${escapeHtml(r.lesson)}</span>
+          <span class="res-score ${scoreOk ? 'good' : 'bad'}">${scoreText}</span>
+        </div>
+      `;
+    }).join('');
+  }catch(err){
+    status.style.color = '#e5555a';
+    status.textContent = dict.resError;
+    console.error('Results lookup failed:', err);
+  }
+}
+
+document.getElementById('res-search-btn').addEventListener('click', runResultsLookup);
+document.getElementById('res-code').addEventListener('keydown', (e) => { if(e.key === 'Enter') runResultsLookup(); });
 
 function openHomeworkModal(e){
   if(e) e.preventDefault();
@@ -1784,6 +2022,10 @@ function startFakeProgress(bar, statusEl, label, totalBytes){
 document.getElementById('nav-homework').addEventListener('click', openHomeworkModal);
 document.getElementById('nav-homework-2').addEventListener('click', openHomeworkModal);
 document.getElementById('homework-close').addEventListener('click', closeHomeworkModal);
+document.getElementById('nav-solutions').addEventListener('click', openSolutionsModal);
+document.getElementById('solutions-close').addEventListener('click', closeSolutionsModal);
+document.getElementById('nav-results').addEventListener('click', openResultsModal);
+document.getElementById('results-close').addEventListener('click', closeResultsModal);
 homeworkOverlay.addEventListener('click', (e)=>{ if(e.target === homeworkOverlay) closeHomeworkModal(); });
 document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeHomeworkModal(); });
 
@@ -1793,6 +2035,7 @@ document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeHomework
   await loadSubscribers();
   await loadHomeworkStatus();
   await loadLessonLockStatus();
+  await loadHomeworkSolutions();
   applyI18n('ar');
   let alreadyRegistered = false;
   try{ alreadyRegistered = localStorage.getItem('as_registered') === 'true'; }catch(e){}
