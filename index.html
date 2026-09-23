@@ -1425,7 +1425,7 @@ function renderLesson(lessonId){
   document.getElementById('panel-filename').textContent = lessonId + '.py';
   const body = document.getElementById('panel-body');
 
-  if(!isUnitUnlocked(unit.id)){
+ if(unit.id !== 'u1' && !isUnitUnlocked(unit.id)){
     renderUnitCodeGate(unit, lesson, title, body);
     return;
   }
