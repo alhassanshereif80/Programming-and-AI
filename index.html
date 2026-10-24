@@ -304,6 +304,11 @@ src="https://www.facebook.com/tr?id=1414285990572286&ev=PageView&noscript=1"
   .video-wrap video::-internal-media-controls-download-button{display:none !important;}
   .video-wrap video::-internal-media-controls-overlay-cast-button{display:none !important;}
   .video-wrap video::-webkit-media-controls-overlay-enclosure{display:none !important;}
+  .drive-shield-corner{
+    position:absolute; top:0; left:0; right:0; z-index:5; cursor:default;
+    height:clamp(48px, 20%, 90px);
+    background:linear-gradient(180deg, rgba(7,8,26,0.98) 55%, rgba(7,8,26,0.6) 82%, transparent 100%);
+  }
 
 
   .whatsapp-btn{
@@ -591,6 +596,14 @@ src="https://www.facebook.com/tr?id=1414285990572286&ev=PageView&noscript=1"
       <select id="sol-lesson" class="mini-input"></select>
     </div>
 
+    <div id="sol-name-gate" style="display:none; text-align:center; padding:10px 0 20px;">
+      <p style="font-size:13.5px; color:var(--text-muted); margin-bottom:12px;" data-i18n="solNamePrompt">اكتب اسمك الثلاثي الأول قبل ما تتفرج، عشان المعلم يقدر يتابع مين شاف الحل.</p>
+      <div style="max-width:320px; margin:0 auto; display:flex; gap:8px;">
+        <input type="text" id="sol-name-input" class="mini-input" style="flex:1;" placeholder="الاسم الثلاثي">
+      </div>
+      <button type="button" class="btn-primary" id="sol-name-confirm" style="margin-top:14px;" data-i18n="solWatchBtn">مشاهدة الفيديو</button>
+    </div>
+
     <div id="sol-video-wrap" class="video-wrap" style="display:none;"></div>
     <div id="sol-empty-note" style="text-align:center; padding:30px 0; color:var(--text-muted); font-size:13.5px;" data-i18n="solEmptyNote">اختر درسًا لتشاهد حل واجبه.</div>
   </div>
@@ -854,6 +867,7 @@ const i18n = {
     solTitle:'حلول الواجبات', solSub:'اختر الدرس وشوف فيديو حل الواجب بتاعه على يوتيوب — متاح للكل من غير أي قيود.',
     solLabelLesson:'اختر الدرس', solLessonPlaceholder:'-- اختر الدرس --',
     solEmptyNote:'اختر درسًا لتشاهد حل واجبه.', solNoVideoNote:'لسه معملناش حل الواجب بتاع الدرس ده.',
+    solNamePrompt:'اكتب اسمك الثلاثي الأول قبل ما تتفرج، عشان المعلم يقدر يتابع مين شاف الحل.', solWatchBtn:'مشاهدة الفيديو',
     navResults:'📊 نتيجتي', resTitle:'نتيجتي', resSub:'اكتب كودك عشان تشوف كل درجاتك في الواجبات اللي سلّمتها.',
     resSearchBtn:'استعلام', resMissingCode:'اكتب الكود الأول.', resSearching:'جارِ البحث...',
     resNoResults:'مفيش أي واجبات متسجلة بالكود ده لسه.', resNoMcq:'—', resError:'حصل خطأ، جرّب تاني.',
@@ -917,7 +931,7 @@ const i18n = {
     confirmEmailDesc:'اكتب نفس البريد الإلكتروني اللي سجّلت بيه، عشان نتأكد من اشتراكك في المادة.',
     confirmEmailErr:'من فضلك أدخل بريدًا إلكترونيًا صحيحًا.',
     confirmEmailBtn:'تأكيد البريد',
-    unitCodeDesc:'الدرس ده جزء من {unit}. اكتب كود الوحدة اللي وصلك عشان تفتح كل دروسها.',
+    unitCodeDesc:'الدرس ده جزء من {unit}. اكتب كود الوحدة اللي وصلك عشان تفتح كل دروسها، أو كود الدرس ده بس لو معاك كود خاص بيه وحده.',
     unitCodePlaceholder:'مثال: U1-XXXXX',
     unitCodeErr:'الكود غلط، تأكد منه وجرّب تاني.',
     unitCodeBtn:'فتح الوحدة',
@@ -939,6 +953,7 @@ const i18n = {
     solTitle:'Homework Solutions', solSub:'Pick a lesson to watch its homework solution on YouTube — open to everyone, no restrictions.',
     solLabelLesson:'Pick a lesson', solLessonPlaceholder:'-- Pick a lesson --',
     solEmptyNote:'Pick a lesson to watch its solution.', solNoVideoNote:"This lesson's solution isn't up yet.",
+    solNamePrompt:'Enter your full name before watching, so your teacher can see who watched the solution.', solWatchBtn:'Watch video',
     navResults:'📊 My Results', resTitle:'My Results', resSub:'Enter your code to see all your scores across the homework you\'ve submitted.',
     resSearchBtn:'Search', resMissingCode:'Enter your code first.', resSearching:'Searching...',
     resNoResults:'No homework found for this code yet.', resNoMcq:'—', resError:'Something went wrong, please try again.',
@@ -1002,7 +1017,7 @@ const i18n = {
     confirmEmailDesc:"Enter the same email you registered with, so we can confirm your subscription.",
     confirmEmailErr:'Please enter a valid email address.',
     confirmEmailBtn:'Confirm email',
-    unitCodeDesc:'This lesson is part of {unit}. Enter the unit code you were given to unlock all of its lessons.',
+    unitCodeDesc:'This lesson is part of {unit}. Enter the unit code you were given to unlock all of its lessons, or a code for just this lesson if that\'s what you have.',
     unitCodePlaceholder:'e.g. U1-XXXXX',
     unitCodeErr:'That code is incorrect — double-check it and try again.',
     unitCodeBtn:'Unlock unit',
@@ -1116,31 +1131,22 @@ function initShieldedVideos(container){
     poster.addEventListener('click', () => {
       const driveId = wrap.dataset.driveId;
       const title = wrap.dataset.videoTitle;
+      /* Back to Google's own Drive preview player (not a raw direct-download
+         <video src>). This matters because Drive's preview respects the
+         file's sharing permission: once "Viewers can download, print, and
+         copy" is turned OFF for the file (Share -> gear icon), Google's own
+         player hides its download button and blocks right-click-save on its
+         own — enforced by Google, not by CSS tricks on our side, which is
+         far more reliable across browsers/devices. The small shield below
+         still covers the top-right "more options" (⋮) corner as a second
+         layer, mainly to stop "Open in new window" from being one click
+         away, even though that window still can't download once the Drive
+         permission above is off. */
       wrap.innerHTML = `
-        <video
-          src="https://drive.google.com/uc?export=download&id=${driveId}"
-          title="${title}"
-          controls
-          controlslist="nodownload noremoteplayback"
-          disablepictureinpicture
-          playsinline
-          autoplay
-          oncontextmenu="return false;">
-        </video>
+        <iframe src="https://drive.google.com/file/d/${driveId}/preview" title="${title}"
+          allow="autoplay" allowfullscreen loading="lazy"></iframe>
+        <div class="drive-shield-corner" oncontextmenu="return false;"></div>
       `;
-      const vid = wrap.querySelector('video');
-      vid.setAttribute('controlsList', 'nodownload noremoteplayback');
-      vid.disablePictureInPicture = true;
-      // If Google throws the "can't scan for viruses" interstitial page instead
-      // of the raw video (can happen with larger files), the <video> element
-      // fails to load — fall back to the old Drive preview player rather than
-      // leaving the student with a blank black box.
-      vid.addEventListener('error', () => {
-        wrap.innerHTML = `
-          <iframe src="https://drive.google.com/file/d/${driveId}/preview" title="${title}"
-            allow="autoplay" allowfullscreen loading="lazy"></iframe>
-        `;
-      }, { once: true });
     }, { once: true });
   });
 }
@@ -1184,11 +1190,13 @@ const curriculum = [
       { id:'2-1', title_ar:'تقنيات التشفير والمصادقة', title_en:'Encryption & Authentication Techniques' },
       { id:'2-2', title_ar:'تصميم أمن الشبكات', title_en:'Network Security Design' },
       { id:'2-3', title_ar:'الاستجابة للحوادث وإدارة المخاطر', title_en:'Incident Response & Risk Management' },
+      { id:'2-4', title_ar:'ورشة إنقاذ الوحدة الأولى', title_en:'Unit 1 Rescue Workshop' },
   ]},
   { id:'u3', title_ar:'الوحدة 3: تطبيقات الويب', title_en:'Unit 3: Web Applications', lessons:[
       { id:'3-1', title_ar:'البنية العامة لتطبيقات الويب', title_en:'General Architecture of Web Apps' },
       { id:'3-2', title_ar:'طرق الاتصال في تطبيقات الويب', title_en:'Communication Methods in Web Apps' },
       { id:'3-3', title_ar:'أساسيات تكنولوجيا الواجهة الأمامية', title_en:'Frontend Technology Basics' },
+      { id:'3-4', title_ar:'مراجعة الوحدة الثالثة', title_en:'Unit 3 Review' },
   ]},
   { id:'u4', title_ar:'الوحدة 4: تصميم الويب والوسائط', title_en:'Unit 4: Web & Media Design', lessons:[
       { id:'4-1', title_ar:'أنواع الوسائط وخصائصها', title_en:'Media Types & Characteristics' },
@@ -1300,7 +1308,6 @@ function isSubscribed(){
 
 /* Lessons listed here are free previews — visible to anyone, no subscription or email needed.
    Add more lesson IDs (e.g. '2-1') here any time you want another lesson to be a free sample. */
-const FREE_LESSON_IDS = new Set(['1-1']);
 
 function buildUnitTree(){
   const wrap = document.getElementById('unit-tree');
@@ -1347,18 +1354,29 @@ function isUnitUnlocked(unitId){
 function setUnitUnlocked(unitId){
   try{ localStorage.setItem('as_unit_unlocked_' + unitId, 'true'); }catch(e){}
 }
+function isLessonUnlocked(lessonId){
+  try{ return localStorage.getItem('as_lesson_unlocked_' + lessonId) === 'true'; }catch(e){ return false; }
+}
+function setLessonUnlocked(lessonId){
+  try{ localStorage.setItem('as_lesson_unlocked_' + lessonId, 'true'); }catch(e){}
+}
 
 /* Redeems a code against the Apps Script (checks it AND marks it used, in one
-   atomic step, so it can never be reused elsewhere). Returns one of:
-   {status:'ok'} | {status:'used'} | {status:'invalid'} | {status:'error', message} */
-async function redeemUnitCode(unitId, rawCode){
+   atomic step, so it can never be reused elsewhere). We send BOTH the unit
+   id and the exact lesson id being viewed — the server tells us back which
+   scope the code actually matched (a whole unit, or just that one lesson —
+   e.g. a "last lesson only" code), so this page knows what to unlock.
+   Returns one of:
+   {status:'ok', scope:'unit'|'lesson', scopeId} | {status:'used'} |
+   {status:'invalid'} | {status:'error', message} */
+async function redeemUnitCode(unitId, lessonId, rawCode){
   const code = rawCode.trim().toUpperCase();
   if(!code) return { status: 'invalid' };
   if(!UNIT_CODE_REDEEM_URL) return { status: 'error', message: 'not_configured' };
   try{
     const res = await fetch(UNIT_CODE_REDEEM_URL, {
       method: 'POST',
-      body: JSON.stringify({ code, unit: unitId })
+      body: JSON.stringify({ code, unit: unitId, lessonId: lessonId })
     });
     return await res.json();
   }catch(err){
@@ -1391,11 +1409,15 @@ function renderUnitCodeGate(unit, lesson, title, body){
     confirmBtn.disabled = true;
     const originalLabel = confirmBtn.textContent;
     confirmBtn.textContent = dict.unitCodeChecking;
-    const result = await redeemUnitCode(unit.id, raw);
+    const result = await redeemUnitCode(unit.id, lesson.id, raw);
     confirmBtn.disabled = false;
     confirmBtn.textContent = originalLabel;
     if(result.status === 'ok'){
-      setUnitUnlocked(unit.id);
+      if(result.scope === 'lesson'){
+        setLessonUnlocked(result.scopeId || lesson.id);
+      } else {
+        setUnitUnlocked(result.scopeId || unit.id);
+      }
       renderLesson(lesson.id);
     } else if(result.status === 'used'){
       err.textContent = dict.unitCodeUsed;
@@ -1425,7 +1447,10 @@ function renderLesson(lessonId){
   document.getElementById('panel-filename').textContent = lessonId + '.py';
   const body = document.getElementById('panel-body');
 
- if(unit.id !== 'u1' && !isUnitUnlocked(unit.id)){
+  /* Unit 1 is open to everyone, no code needed. Units 2-4 need either a
+     whole-unit code, or (for just that one lesson) a lesson-specific code —
+     e.g. a "last lesson only" code for the review session. */
+  if(unit.id !== 'u1' && !isUnitUnlocked(unit.id) && !isLessonUnlocked(lesson.id)){
     renderUnitCodeGate(unit, lesson, title, body);
     return;
   }
@@ -1595,22 +1620,69 @@ function populateSolutionsLessonSelect(){
   if(prevValue) sel.value = prevValue;
 }
 
+function getStoredViewerName(){
+  try{ return localStorage.getItem('as_viewer_name') || ''; }catch(e){ return ''; }
+}
+function setStoredViewerName(name){
+  try{ localStorage.setItem('as_viewer_name', name); }catch(e){}
+}
+
+/* Fire-and-forget: logs that someone watched a solution video. Never blocks
+   or gates playback — if this fails (network hiccup, script not deployed
+   yet) the video still plays, since the videos themselves stay fully free. */
+function logSolutionView(studentName, lessonId){
+  if(!HOMEWORK_SCRIPT_URL) return;
+  try{
+    fetch(HOMEWORK_SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'logView', studentName: studentName, lessonId: lessonId })
+    }).catch(() => {});
+  }catch(e){ /* ignore — viewing tracking is best-effort only */ }
+}
+
+function playSolutionVideo(lessonId, videoId){
+  const wrap = document.getElementById('sol-video-wrap');
+  document.getElementById('sol-name-gate').style.display = 'none';
+  wrap.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" title="Homework solution" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>`;
+  wrap.style.display = 'block';
+}
+
 function renderSolutionVideo(lessonId){
   const wrap = document.getElementById('sol-video-wrap');
   const emptyNote = document.getElementById('sol-empty-note');
+  const nameGate = document.getElementById('sol-name-gate');
   const url = lessonId ? homeworkSolutions[lessonId] : null;
   const videoId = url ? extractYoutubeId(url) : null;
+
+  wrap.style.display = 'none';
+  wrap.innerHTML = '';
+  nameGate.style.display = 'none';
+
   if(videoId){
-    wrap.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}" title="Homework solution" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>`;
-    wrap.style.display = 'block';
     emptyNote.style.display = 'none';
+    nameGate.style.display = 'block';
+    nameGate.dataset.lessonId = lessonId;
+    nameGate.dataset.videoId = videoId;
+    document.getElementById('sol-name-input').value = getStoredViewerName();
   } else {
-    wrap.style.display = 'none';
-    wrap.innerHTML = '';
     emptyNote.style.display = 'block';
     emptyNote.textContent = lessonId ? i18n[currentLang].solNoVideoNote : i18n[currentLang].solEmptyNote;
   }
 }
+
+document.getElementById('sol-name-confirm').addEventListener('click', () => {
+  const nameGate = document.getElementById('sol-name-gate');
+  const nameInput = document.getElementById('sol-name-input');
+  const name = nameInput.value.trim();
+  if(!name){
+    nameInput.focus();
+    nameInput.style.borderColor = '#e5555a';
+    return;
+  }
+  setStoredViewerName(name);
+  logSolutionView(name, nameGate.dataset.lessonId);
+  playSolutionVideo(nameGate.dataset.lessonId, nameGate.dataset.videoId);
+});
 
 function openSolutionsModal(e){
   if(e) e.preventDefault();
