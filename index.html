@@ -368,8 +368,9 @@ src="https://www.facebook.com/tr?id=1414285990572286&ev=PageView&noscript=1"
     position:fixed; inset:0; z-index:100;
     background:rgba(4,5,15,0.72);
     backdrop-filter:blur(4px);
-    display:flex; align-items:center; justify-content:center; padding:20px;
+    display:none; align-items:center; justify-content:center; padding:20px;
   }
+  #gate-overlay.open{display:flex;}
   #homework-overlay{
     position:fixed; inset:0; z-index:100;
     background:rgba(4,5,15,0.72);
@@ -427,6 +428,75 @@ src="https://www.facebook.com/tr?id=1414285990572286&ev=PageView&noscript=1"
     display:flex; align-items:center; justify-content:center;
   }
   .gate-close:hover{color:var(--mint); border-color:var(--teal);}
+  /* ---------- dashboards ---------- */
+  #dash-overlay{position:fixed; inset:0; z-index:110; background:rgba(4,5,15,.9); backdrop-filter:blur(6px); display:none; overflow-y:auto; padding:18px;}
+  #dash-overlay.open{display:block;}
+  .dash-shell{position:relative; max-width:1120px; margin:0 auto; background:var(--bg-elevated); border:1px solid var(--border); border-radius:18px; padding:24px 22px 28px; min-height:300px;}
+  .dash-login{max-width:420px; margin:26px auto 10px; text-align:center;}
+  .dash-login h2{font-size:21px; margin-bottom:8px;}
+  .dash-sub{color:var(--text-muted); font-size:13px; line-height:1.9; margin-bottom:16px;}
+  .dash-err{color:#e5555a; font-size:13px; min-height:22px; margin-top:10px; line-height:1.7;}
+  .dash-spin{width:38px; height:38px; margin:30px auto 12px; border:4px solid var(--border); border-top-color:var(--teal); border-radius:50%; animation:dspin 0.9s linear infinite;}
+  @keyframes dspin{to{transform:rotate(360deg);}}
+  .dash-head{display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-bottom:20px; padding-inline-end:44px;}
+  .dash-avatar{width:56px; height:56px; border-radius:50%; background:linear-gradient(135deg,var(--purple-bright),var(--teal)); display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:700; flex-shrink:0;}
+  .dash-head .who{flex:1; min-width:180px;}
+  .dash-head .who h2{font-size:19px; margin:0 0 6px;}
+  .chip{display:inline-block; font-size:11.5px; padding:3px 10px; border-radius:20px; border:1px solid var(--border); color:var(--text-muted); margin:2px 0; margin-inline-end:6px;}
+  .dash-actions{display:flex; gap:8px;}
+  .dash-btn{background:transparent; border:1px solid var(--border); color:var(--text); border-radius:9px; padding:7px 14px; font-size:12.5px; cursor:pointer; font-family:inherit;}
+  .dash-btn:hover{border-color:var(--teal); color:var(--mint);}
+  .kpi-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(165px,1fr)); gap:12px; margin-bottom:18px;}
+  .kpi{background:var(--bg); border:1px solid var(--border); border-radius:14px; padding:14px 16px;}
+  .kpi .k-label{font-size:12px; color:var(--text-muted); margin-bottom:6px;}
+  .kpi .k-val{font-size:25px; font-weight:700; line-height:1.2;}
+  .kpi .k-sub{font-size:11.5px; color:var(--text-muted); margin-top:5px; line-height:1.6;}
+  .dash-card{background:var(--bg); border:1px solid var(--border); border-radius:14px; padding:16px 18px; margin-bottom:16px;}
+  .dash-card h3{font-size:14.5px; margin:0 0 12px;}
+  details.dash-card summary{cursor:pointer; font-size:14px; display:flex; align-items:center; gap:10px;}
+  .good{color:#3fbf6a;} .mid{color:#e0a83f;} .bad{color:#e5555a;}
+  .pill{display:inline-block; font-size:11.5px; padding:3px 10px; border-radius:20px; border:1px solid var(--border); color:var(--text-muted); white-space:nowrap;}
+  .pill.good{border-color:#3fbf6a; background:rgba(63,191,106,.08);}
+  .pill.mid{border-color:#e0a83f; background:rgba(224,168,63,.08);}
+  .pill.bad{border-color:#e5555a; background:rgba(229,85,90,.08);}
+  .insights{margin:0; padding-inline-start:20px; font-size:13px; line-height:2;}
+  .legend{font-size:11px; color:var(--text-muted); font-weight:400; margin-inline-start:10px;}
+  .lg-bar,.lg-mark{display:inline-block; width:12px; height:8px; vertical-align:middle; margin-inline-end:3px;}
+  .lg-bar{background:#45a9a9; border-radius:2px;} .lg-mark{border-top:2px dashed var(--mint); height:0;}
+  .chart-scroll{overflow-x:auto; padding-bottom:6px;}
+  .bars{display:flex; align-items:flex-end; gap:8px; min-width:max-content; padding:0 4px;}
+  .bar-col{display:flex; flex-direction:column; align-items:center; width:38px;}
+  .bar-col .b-val{font-size:10px; color:var(--text-muted); margin-bottom:3px; height:14px; white-space:nowrap;}
+  .bar-area{position:relative; height:130px; width:100%; display:flex; align-items:flex-end; justify-content:center;}
+  .bar{width:22px; border-radius:6px 6px 0 0; min-height:2px;}
+  .mark{position:absolute; left:0; right:0; border-top:2px dashed var(--mint);}
+  .bar-lab{font-size:10.5px; color:var(--text-muted); text-align:center; margin-top:6px;}
+  .les-row{display:flex; align-items:center; gap:8px; padding:10px 0; border-bottom:1px solid var(--border); flex-wrap:wrap;}
+  .les-row:last-child{border-bottom:0;}
+  .les-id{font-family:'JetBrains Mono',monospace; color:var(--teal); width:36px; font-size:12px;}
+  .les-title{flex:1; min-width:170px; font-size:13px; line-height:1.6;}
+  .ev-row{display:flex; justify-content:space-between; gap:10px; padding:8px 0; border-bottom:1px solid var(--border); font-size:13px; line-height:1.6;}
+  .ev-row:last-child{border-bottom:0;} .ev-time{color:var(--text-muted); font-size:12px; white-space:nowrap;}
+  .dash-empty{color:var(--text-muted); font-size:13px; padding:10px 0; text-align:center;}
+  .dash-tabs{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px;}
+  .dash-tab{background:transparent; border:1px solid var(--border); color:var(--text-muted); border-radius:10px; padding:8px 16px; font-size:13px; cursor:pointer; font-family:inherit;}
+  .dash-tab.active{background:linear-gradient(135deg,var(--purple-bright),var(--teal)); color:#fff; border-color:transparent;}
+  .adm-controls{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:12px;}
+  .adm-controls .mini-input{flex:1; min-width:150px; width:auto;}
+  .table-scroll{overflow:auto; max-height:62vh; border:1px solid var(--border); border-radius:12px;}
+  .dash-table{width:100%; border-collapse:collapse; font-size:12.5px;}
+  .dash-table th,.dash-table td{padding:9px 11px; border-bottom:1px solid var(--border); text-align:start; white-space:nowrap;}
+  .dash-table th{position:sticky; top:0; background:#15172e; z-index:2; font-weight:600; color:var(--text-muted);}
+  .dash-table tr.clickable{cursor:pointer;} .dash-table tr.clickable:hover td{background:rgba(69,169,169,.07);}
+  .matrix td{text-align:center;} .matrix th{text-align:center;}
+  .matrix td:first-child,.matrix th:first-child{position:sticky; inset-inline-start:0; background:#15172e; z-index:3; text-align:start;}
+  .cell-miss{color:#e5555a; background:rgba(229,85,90,.06);} .cell-ok{background:rgba(63,191,106,.05);}
+  .two-col{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px;}
+  .mini-stats{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px;}
+  .hard{font-size:13px; margin-bottom:10px;}
+  .name-cloud{display:flex; flex-wrap:wrap; gap:4px; margin-top:8px;}
+  @media (max-width:640px){ .dash-shell{padding:18px 14px 22px;} .kpi .k-val{font-size:21px;} }
+
   .register-pill{
     font-family:'JetBrains Mono'; font-size:12.5px;
     border:1px solid var(--border); background:transparent; color:var(--text);
@@ -465,7 +535,7 @@ src="https://www.facebook.com/tr?id=1414285990572286&ev=PageView&noscript=1"
   .mcq-opts label.opt-wrong{background:rgba(229,85,90,0.14); border-color:#e5555a; color:#f0a0a3;}
   .mcq-item.unanswered{border-color:#e5555a;}
 
-  #site-content{display:none;}
+  #site-content{display:block;}
   .welcome-strip{
     display:flex; align-items:center; justify-content:space-between; gap:12px;
     background:var(--bg-elevated); border:1px solid var(--border); border-radius:12px;
@@ -518,6 +588,7 @@ src="https://www.facebook.com/tr?id=1414285990572286&ev=PageView&noscript=1"
 <!-- REGISTRATION MODAL -->
 <div id="gate-overlay">
   <div class="gate-card">
+    <button type="button" class="gate-close" id="gate-close" aria-label="close">✕</button>
     <div class="gate-logo">
       <img src="data:image/webp;base64,UklGRn4cAABXRUJQVlA4IHIcAADQmwCdASr0AfQBPmEulEgkIiIhIZLpEIAMCWdu/BFZMuGnKbsxn1Kzm8mHwCOG+36L85v+v9fPmCfqD03/MH/Ov9L+13u6+kv0AP7Z/jOs6/a/2AP2c9OD2U/7B/yfTA1Wzx//ff4p+yHhb/hvyy8S30X9v/I393P8z8Tuevrx1IPjv1o/Tf1z9tfjZ/H/577SfSX1PeoF+Uf0n/Bfl7+YPHtgA/J/51/qP7X+8/+F9LLUI8B/873AP5P/Ov+H/avbf/keGj6h7An8t/un/o/1Puz/0P/q/1H+t/df2y/UH/s/0v+h+Qz+bf2X/q/3b24fYz+7fs+/uGIBElNJ3kOmCPIkppO8h0wTxD3Yx7yHTBHkTYEG4eSJgjyJKaTvIdMEeRJTSd5DpgjyJKaTvIdMEeRJTSd5DpgjyJKaTvIdMEeRJTSd5DpgjyJKaTvIdMEeRJTSd5DpgjyJKaTvIdMEeRJTSd5DpgjyJKaTvIdMEeRJTSd5Do/5OqzMCV6pd7VkYtejTqsxFCD5pO8h0wR5ElNJ0vd7O6vDSfgZnDCEqSetM+f7WKku4Ctd9HkR5ElNJ3kOmCO3Y/rPK+G+ixC0DJuUaZ7y3dN+RAliHpgjyJKaTvIdMEeQ8SsmS26ZJdJbIruAxjHJZuu0+krrtjCwWYLyHTBHkf8aTvIdLx120M1JKCpUwP9CS4MXsKeZy7kK/kjJxEjdBlDMg+aMgT28RJTSd5Dpgjxzr5brO39Q0vhEph2KHacnoOXsdCALwVtZ9G2Vnr7FGCiTBHkSU0neQ6XjroHMxFUb+VoXNFTK1n3UhcUs2GPoSTXJPbeIkppO8h0wRcslle7gUeDMSoLAmDvbN5M9gH/I9uX9FLLjjfzY7M1oY2WFXyfw92Me8h0wRdSTSxtzykkHycrBnX35S2bgQkfgJJ3VA9i0vppvvc5iQOmCPIkppO8h5m0FZ+kjsm0neQ6YI8cmjHvq4OqF+/CzfhlaDyRneJYy14NeZhpVCLsenJm8C4a2We/je8UJLfZDpg3YzE2VUqxHm+wJKFfJeAWkFwUjkTJ3jDXy2fddZnB0/pkQtwMoLYxI23cBkR/vUi2455HLpiE/WNUfIbJy4Lfi+5Zeb2Eh5iMa7JWlTjfr71OKWPoMzFbmuZYeVRqFvKT1/7p/OxZUedo7wac4HKjhpC20gueli2CoEJiisRR2q339NEDTir8T3DfT1wQoV1wahgVF4nie+H3VxoHDjg6F8ycLTSIkppKxT8Epbrwq2L+hkDr++6e7FoMoGY3p+P/J+pTLnW2H4bfhzH41g1EyhyWMhybQ65ElNJQGe2R/o1LnmvU4fFVSjqphBMtn4oBjk+pgdMEgikppOkBA1t6aoC1K8vHBiFincW0qgCwNdn3Edtj18Fy936s8FQjpKaTvIdMEdt36pABdQF3Pku5now74ixMdOGQSZ8oEd8RF++GlxAE5eKC4q+3nI7IB374BqnCwHGi+flgKqTHXsRxLsLqx7yHTBHkSWqCPJJ9+TvIdL08PdjHqgCAjyJKaTvIdL0MwOmCPIkppLJD3Yx7yHSN8iSmk7yHTBHkSU0neQ640eRJTSd5DpgjyJKaTvGrnvIdMEeRJTSd5DpgjyJKaHgKJRyJeWNZqY6BpU3WFHF0ER5Emf1jT6gnm+sr00kwAAP7/d1K3M2D0tqcZlflWIrW+uaAAAAAAAAAAAAAAAAWsSkNhWhuPkwh0V+pQ5wSihwHG/qNyWSIZugLdisfOCZinXhmXoc8OK+GMxvy5/CgfRHuf+uN8VaUpzO27IM7QRS/p8yPHPRRU1eCy94XqvCk8Z4P348nSYnENJJ+wBrOMtLf+iAPo3FI3nRsn9AYGjKiKam9j5EukXWgcQVwcHxVEcjmK/+yR0egiRsJPyIg9DaWjOKmNm0LJCvcYvxDkQmfLLOzeINdwpZ0xBI6O+Drv3sIqpWJ1MYnwuBsn7swTaTQaR6WVvM69PLJkWI80kXR1HidozayPSxCoV3eMXkvnSLq8KXte5avfpcjoM3XO7j82lLV6FHz6Pzx7VnJZKXj5CooAe8xlmqj1jNUnFhCGAdUb8NWFLANkfdiji99+3IyJwKKq53o2OLk1daiaZLHkDsr1LI0OGbaF7WhQLUS+gAYFdJj64ORfyIMwCvfn65UxGc27sSdvuw7tByBjILjcQMNQNMzfGABXlSaSMbK+ikSebTysEjo743fZARqwYcZbxR3vXduO2wnTfwnAlluiiOt9shEUmZUPP8ONH+3ib6Yb7/OUg5bJw98zZcgdmMH0k+uLqTujCBlEkFb29TVKmlSdITOkk8ueJI3fq/z0a095nFEzgPK/zUf/QXrF2g662uuYyrsf2RM+NEcNbDFHtirYLi1cAOupcxdKvwP0xUr6Q30J/FzHzN5HpIdkD7Xg0BbwH8fGePam3rPKLpBlAm4hWzMo7afw64AnWJaM5/0SiIORafeCPBlk16vgcadHBtPW1tXYPI1EHIstE73uxCy1XLlSAjww3ndoNxbvWgqJvgazU1fOXR0maf1wgalahGA8cJOw0Xq95tX8ISwJh4S815MV4Jl5zkcYeEV3BqBrIxgt78Fbu2bB1uzRkgUK4yFcF6iCHcxnHTd7yFsxSaK73R6cqMYCfqcTtwxRNLHOtjbVIZe6cJH34OEXZjDRxTWipAEnUASyaborV/tcMa7iMw5p7FknwrA2xgBt8WL8FSWB4XjJTL5bCp8bQTMv3VX3BnofyjEUtSweB2tBRYM3n8yQKoSxnkIq17UVznacOpFT+9QNxfYgxjyGqUdDrnRDgy3qWiSRPZXyiVh8Yvhfu3bI8cD3FwP8QLe18sqwL/PWSD37ZOCUoqi4Jztb1X1pAnUJSDRzN86Oxm++BiUld0JzqnAceCvp+vqGIlc/pNcM8RoBP3eBJIHU5KFkDN42ng6ayu3Nyr7bFNLxi+ZZx14iZQW9EW8uMlyuM5WPFVKhnvao4PbLynj3UcRZej5h3QXaFtDJB2piQvntUz16b+7I68dwQBzLxjt3PvxHVvIJ4hi4G5rC4NgeXXh6MFobVjiwiZhlTJ9EctEQbesR+KZYIt2Z/+EN6g+5GOnJ61Uw6a0i0hw+zHGez53Osc06vaZMpxADTz7KEepejbMQSLi21DJm0mknundQgox7s2/1Y7e6R9RYmthp9qlX8ODyJHg0AFsqfIhyIac3qLPq2U3deKTFVWo/8cI4/MUdgE4P5kYBl1CkO42NGQiRe6nZXpeNeSIxPGlvIT+lVq1qkA5sRfkkWsyt6pf8w17xtJ24EUxVb604AQptDL5eAutcWiNmVuF4lcWbprES3MKj3X4vCbArQfeaV9GPlIAYFAa3fsdoHH4VCIgE/evU+S7uf1sxxJPucCeIrZt3WCfLxFZN12qx5IBJNko5c1rCGMSOcQBiL8JaZgX39SdgxQvoyWzvu5+w7HhzOdfZ9aVhn0c6lw0AfcczGeVx6WJqH8+Ocjuo6DXjB8gywLweUzwRU4XqI8UWn+/o/i0Y5DgN9f/Zu696VVuVmk9azXZDOSriD297UCG6Zs4xSkCH6mKeNOKOmnc9cRyuVlIafgbgl545EBtRfUQXs1WXL+02Ox4EXm0wfXj9nPx87A0eYOHXpksSDi5w8BlMajvKi5thQGSpBdiwz7cWI9LseApwd6WiPx80fdeprunf9Q0XNZwAPpDk13rVmb9rfw5EuJMILmwgbDuYluHb0yyWBAELAjWfBfoTgSy3MgAbv8PgdoxC3qnPqbmtcGDanpZJ8kS+zkACCFSvZB3spF+2AMWW64YF3v0h7fPOahC/zFbeqe8440/w8ue5NH+siq64n/ZD5mfyhElEqAb72WUv4+3W+CkHGVhmj/YmFoqTTozPtYNIfsVkKwuct0D2ZWRfiFxkR75HmOFvWr9+bAjyP+o3NIx6tsN6KNvAhzyaw6T991Qiz8JZuIra0YA6bryexwXvaP8kool4SeIQI46k4sF+0F791bGQQDB2uzrWh2RQvQX8Tc1gL/hTnYL/1Jo0dq7Y+5NBxQThGJT1p30AQH/DEuVile1cWxBVo349030xzkpwp5Tw1S3TE01TRwIjVMJLN0KGLiuijRE22m+F9M1LSnuS9VR7BzIESMpTXciHH3n1Qcuy3OwNoYIB/KuYcJc9ozSdwkp0DrownIsu4Um17gN6phnT1oyDe3mDVo/PvOj5Ybe3F5fN1dRpul8x3fyyzinPmwwin7AChLT4z2/Qxv7nPkf6eBosEp8ZjvFrQAa27HUxjkmc3ruTCDX4A/RQBv7L5s+qaQwQ4Jy7Wfp5tSTUVvxvyRt1nh+v1/nHPd007Tzysjwb3oZ5x/qyMwb9boTHDS4EUl4xBZTYapVoKEvQ6UDeHaaO2D0BWHSZmv/k2bHQ5qrmnx7r6Xpv3kabkqApWe/69YmrXS8Rb8UDooAMCarWGH5zec/MfIH5mXUzJW76bmSDXhN2D0IkNKSSQViyCFJoU1Am2dodxFNOwlYMVXmQulIjdzUNM0kudvKG1Rub0fSDmtu72HPhTOk2qYk1b+aSm9sjrrZwQPfns/WhC97tS+0ICQnzCaSuaXWwTNnJAJVF/J+dLYFNQ0kUqwAQYHQ21rdVI+f+rjmWA1N/myBbslfDRKB6SbhXcoTiGo/pyZIrQI2EX0OI+Py5H/luSu80hlBocgICIltPS+MSenEoxyl3xqVTYNZ3h0VKbHIAxLmn2sVPwn+h3T8zLhc/S9WUtWFBiarK7Pn7BK6aI2n1gA/g2ZLFCnb/vlfcChkFsfvQ13LuD05SgU990H103V/z7h1dPSBktQocDx+zvBN8X10WAAAAAALICljL6UtRjAWMElBE1Unf4/ft8nf9lAFwM/uUH6FHkA/A/1JAmt9644RjQzMRMToK5F7j+M1SizKNL2da/+hpvBMSy2zMgaSURELh154LNALCxddI05UfrR1x+A6m4er6HLVoU/8+z4p0cMogp+NwHlSRb4Sa7Rdqty7IUQDhU3dBmmuBwqWBNxMHsS3PGzUNjwmbS2i6CLajRhiaIO3sEuRnfQOsBsbqz/dazyDZZzJc6PY9njfY7mzVNyHSBhPzD1w0BD2Fz3fAE2n3ccECsOAHI97064blC6Lk92vsWZG9j1hN6v1wjIlSxx3SCgFpFZlCnmnt4/jJnp6xXta0lSMeokZd0MZHIU8qXetE0KJIrVhXNbfBvyYURONN0JpMkp6lj8Pn0olOdNF8ypeYK71wQ25HclV3GSCb/Ke00nOjcFGhCZwjlntBtXzTYVjhmKdDQEaRmIfmrxDE38jbckdYVkm2QO3v0BVjekzT0iiSm+JelBFIwOD5ghnGraifTCS6tWz2qr5Sq2v6GLy9O2V+vJbxk08cd9fcHlCUfgF+EpQveCL24t/EqFqlD0EMHZ0bLM1b2c4BJZYwZJOGhMg2dyWLXn+IeBnc4Bv2HPLMJX2hcgVkP21MlhMyk+KmHCNz5scikf2/IZuhYbLjt9O0PrD+FSb0lRwbBKHHPx1GbLj73NGa2HUARw3csCpndLRJ+F1KcCJGLNLYAeAXp8Ay8WZjBN1I65OSCq/RIbp4EvVbMaBdnReeKZ3PmUPeleH+y/ZhepmSwxEOqiO1R+hdVxL/kerLcUV/RqpaGY+G+YJ1zFUmsMkFTO8GGgjx3CKQiWmprjQL5SX2wqrq3N5F3mpaMiYpzOpgKj6MmPXW5Nxl9m9+iUzJ7jw5J7E/TyAjnMP3rPUiCwYZvv4Mgkq55TVUD/tC9gD7CXOaZb6FU8GnxUlUKocPM8oh6X8V4VAQN59v81bHO1SpNGVRXuESzyFO61Mir+y3bKMTfXmASgkHy9ISgX73Wb6t9PEWcn7GD3tUSS/ryPTqTWc+TUAFh6EdgOddMzvsSffgO13OrLWXv3vf51UfWtLctsjyaCJ4hKo3vK8Ys7353zZmhn4HlJyKA57HVHzXOzz7eIUWIl/mfrOI3c6YP4W/m59mjZDotsgqo7KybAoKvmw/YF3zZUpE4rPhMHgiF/aZcSRGvxQzyMbS2mBSYlrHugX+533cfZNffD1R7Qw8EL2gQqBMQbVXc81mld2qqqbdLtnuqYLotJmnlaVvUSdnvWSk/QrJAOD5xkXax3HaDPgRcXzxV7C8DaeB0BBKzEyFK88nfMP3WDHnp6d3ZW8h9+DFAYwSb3eu49noN9dn5JY7xr6JH8rE+cHy9pNpK595hMDBONVYCDPOyh1FlGu98RrAuMi2647M40fgx82s0a3YQjCa+g6P2up5VOQ+scdyoe42VKGVpQHAPuwhcJZ9vheEtf3gr8yuZse2+UCp+SYc/0aeB2CNi+EwSBVC7mEGxiB+ytRcZugEj9nVRCjIkaDdbygy+7QHO2h16mV+rDGACftiPg1/Ft/OsHzXEeQ3igZryqEK4bP4V6VXmB6f0Yw0MGGTYkYJ4tBPN3D21bKTR7k2InOs6BMlTD9yqjIoQI+ULkSBOqtLEunvET9ot1ms7HpTdISsb6nj6Yl8pBOG7w2/9MWHY65rtdINuu5rfZ6C3OkfECIEVPcln6xzu/sj4aHANgtQqN5v8CQ2wjdfXT+Smcqj6fCSzY5ZszRKPXs+8cXEJcUrPi4FhMm3e4kKiXTMcL1c7U78eYelHDbwZ5ky0mZ/Z3qGQaV/4Lw2Bxb5Iyu4VY5lDoTrnJHL8k7kCn1sPE2enrCDWjDPNEJ+V6Y0Ej+zGSIEtMKafOYihrNnxMc1owezeSmbiVFqguz/s+zmwkh+jE2uokOe59uv5kdVKo1hXnjGV/CbWV8rtb/tMSnC8/8u2AOK2PLmALylR3tnersDPqrkLxtX0AjHxZBI3FWzhUdz6q2v50Pwd9UBs5I2A1U8Fyo8378mjctoqZe47mz3n/mpdc58irV7RE50N9dRJT6HNxFvvy5H5oRqLoHMSIoOG/liIq6nYMsgFPGS2K+p9HgWZIEfVKLNZ6nuYMWkYAGwttWcwxseMuEoVrzebfjA4gGcUGqFzlbS9Tik+lcu3YW2/qiNwmszkr0JsvHTM5NUiYM1yAUEucJSuZUMXM+y4NFVXmR8F016+XEOdQRVIBuS2VS78f8tyCj3tqs9AXG+bPPx23HYUJwmEBsuHW5ehDP75OJkClONlBb/5BXtqKIqoCYxVMOn6ZbuulLzkgu5geoF8w8hSpTHKXsWLsPhxuNmZzX3JA5QH9jWsbsucpswANuSXoPCHt3Ynq1OsRLo9ovIZdjgODS8ciXfD5RI2BsZS+L6rEM98+dptE+hOnfu9hqLlhR7CpPmEFluY24KAGq8A4TkpvkRTXpV7izChty/fPdD5zUChxtyKKCZIBlqKceJJ0Onj2oGnCL9KJfTlXm3RcT7gTb/i4Wa5yXClEXHhrHg4uVhlwWDtCPEVeSrgP2IBr3O05NQyLOhG7EQ7G53tXKu/ufrNYNNkRymWf49ZqKPTjsB2SdsHlrmgqjzWQnivR+yC37lJwUb0z//r+ttTVqnHqKej03SAs8lymiJ7jZFVGS8g2ULspiTta1s+VbFvoY7y7F4kejWTaAI6oO8rsJTnqArEWp6DQ2FEBEzP3x/UfReZNFPdCYV156QgNwcxNG521XEIP9GlmQKiiENSJmYOdvzXIf30s0hk5ISy9vmf95V70A/cjBtSkNs/LMPIFq0AgVOeK9dKGMMB1YIsEc0qM8G3+YnVDdgCWT19mF+yX9tTTG20JYC/5Do1wMMccdKt6pTnRs8lX5HnjS49lsI3CNZU6rTUsuB87fMWm152OQQhjXIxf+5v/aTq8QUTXWwznFXOQ9UiDbZDpU2uU5WQP415VuBmoDropNnf1n1NvhbnRnYs4FQpcC35FMcQleK5JeOwbDk29/cVexUW3BuJhwQ4aQIX1rtvEN9ilBDf+Afe59Koynq+O1vlq/YamDHyabyHHY3lvihBovKdbjxEUJ/6tCcpDZIh1SA6RIH972SgD0xFVY4QT8qYGRNalAAABUioPQDCaXCSZM9avZyFauF1kY0xlPl6zDMX1o77zek23BDEeUFNrZYnHioIfIOQj8Nfj9WdE6dRyvD9sOR77MgFLlZ87QX9NLyfcgKOL5LEVL8AUG5g5mawKDjdAdiZA044REaBiIAj1qRPAsPNh0CNA7tgjlfm8BIkCPJGEHwHAj0CAYIDUN64Sx0mudgDAcCDy0/UZMeUPmQp3CuXQmAWrJ9rOnWxDG6frMyFfChV3o0wvCFj6MlpcG3GveUnYkvRgIEJWpmw0ksAbTL6Otg5EvPDc98cplmjugmtL/XrZgIAaijGEC8cN3tV9ZHkwmUbzLxCqfJH/DmsWfAlPTvV1mvCKP2wq+mAqsK7KVrI2kAtgApm3yo85WW4bNakQoNa33bQIzgraMSJpEtAV1KUgOneoAbB2AIgoiSIGbfirXsk/cLLpKibvzt1UJgvPRnHsCf2RO8bICZLL1drr3wcbqCMfx5ZjsRgZS7wnoWXjXlnq9O2lDbu+/Mc79YaKbvvJLR3s4O6rrogdDAD6yb/gItRMAcRD+WGj8D5u9yWKHq9/o109AetzoeFrgUrO85hKQWig7372Q8ctSCn8bfz+/OXQ9Yj3Mc/3St7OTZMUwInuyscwZo4yiZiy0bH0jFmqVICsQJ9YfrcXP0NKEK9KUoNGHL/yvdW+35uqrjwM+UWDzTiqs2+TG3srD7jzH/q9VZP1eKsX1/4a4sgKnQ2Zhy/LI5KSgjcstuKlTSqD5NcxfX+n2ZjOuL5WLzNLZh5wtee2bO9mmDj7AaqkBg8vUPQ4lYrOJbQyHJEfyMUrc1zGLieti99hr/kDfFz+LN1QextkJ620qVjOVHWLbVKIWrxVfBiRhsEK4b7jYiQSD1cEsSw/ujedvftWWZ/adb4Xa5bJktjOfAF1wLshlCOyh/EA9fuXJ1QQo1Iuh6y7h3mGW+p/UlW2vBhAxGmeD63i6w8S73JlsE7hOQVhvicDOhGy/3qp4PiVlqxT5TVzH4k9chMJAd2Be2BEAjTykEeimrh8eU0KtVSFryERjIG/P2Kj/0R7UYa1qdRWze/esogXw7qLrTfkjdv6atqj2b2z4S1vVy9GSAYi3NWz+D6ho5UOXmraslpZyCLkIJi6kX3ezp/t3wMvJVBL5AnKAWqGvfVNavMiHTLbJoEBzz98e+aaMw/wZpzt8utdqXI4IcoBbLWVQPXMI0dlnacVS0N/IUJChdzMcxhW+1ttamxQc5EHNZqm53LELl33j2vi62+mgBjJp+LAp6P+ScLN2xDV8cBv5MDuLiFbFSuC3UmFZfE4g6wkYs1mPU3/mT/mGvA/VrO2opSi/RT9MAZbrH7Eg6EIslbZ8WWRiuCrfADYq2UJJPf1d0y2lJSDgx4p1tOOISZZdUJdfAeuXjMOZ/03u1qVQOp8Tgk7LP6Mz1CckUbyThjj++KRvKttFh4D7QSoLgYFg6dS/2nzwBPDvxvk2iUVdHkl/48/40+4rg4svlZhwyU7DpODRdIown5Uy+9UiTm7zyUNkx2OQmWW+ICqjiqcLKJ9NuT+YmvlxGs0fL7CVt/zNFV0ZsS3Wn8YdrZz5r5kaMu1n9bfaqF9vMuYC6KENDw1z6+uPUZD1P3MIh+IfnmGVr18a/lJenQjjfDu8FK+4AAAAAEZYAAAAAAAAAAAK7ZfbqPd42HMPlFWRtYAAA" alt="logo">
       <div>
@@ -601,11 +672,21 @@ src="https://www.facebook.com/tr?id=1414285990572286&ev=PageView&noscript=1"
       <div style="max-width:320px; margin:0 auto; display:flex; gap:8px;">
         <input type="text" id="sol-name-input" class="mini-input" style="flex:1;" placeholder="الاسم الثلاثي">
       </div>
+      <div style="max-width:320px; margin:8px auto 0; display:flex; gap:8px;">
+        <input type="text" id="sol-code-input" class="mini-input" dir="ltr" style="flex:1;" placeholder="الكود (يساعد المعلم يتعرف عليك)">
+      </div>
       <button type="button" class="btn-primary" id="sol-name-confirm" style="margin-top:14px;" data-i18n="solWatchBtn">مشاهدة الفيديو</button>
     </div>
 
     <div id="sol-video-wrap" class="video-wrap" style="display:none;"></div>
     <div id="sol-empty-note" style="text-align:center; padding:30px 0; color:var(--text-muted); font-size:13.5px;" data-i18n="solEmptyNote">اختر درسًا لتشاهد حل واجبه.</div>
+  </div>
+</div>
+
+<div id="dash-overlay">
+  <div class="dash-shell">
+    <button type="button" class="gate-close" id="dash-close" aria-label="close">✕</button>
+    <div id="dash-body"></div>
   </div>
 </div>
 
@@ -639,6 +720,7 @@ src="https://www.facebook.com/tr?id=1414285990572286&ev=PageView&noscript=1"
     </a>
     <div class="nav-links" id="nav-links">
       <a href="#courses" data-i18n="navCourses">📚 الكورسات</a>
+      <a href="#" id="nav-register">📝 سجّل</a>
       <a href="#" id="nav-homework" data-i18n="navHomework">📮 تسليم الواجب</a>
       <a href="#" id="nav-results" data-i18n="navResults">📊 نتيجتي</a>
       <a href="#" id="nav-solutions" data-i18n="navSolutions">🎥 حلول الواجبات</a>
@@ -858,8 +940,8 @@ src="https://www.facebook.com/tr?id=1414285990572286&ev=PageView&noscript=1"
 const i18n = {
   ar: {
     brandName:'م. الحسن شريف', brandTag:'LEARN · BUILD · GROW',
-    gateTitle:'سجّل بياناتك للبدء',
-    gateSub:'املأ النموذج التالي، وبعد ما تخلّص اضغط على "تم التسجيل" تحت عشان ترجع للموقع.',
+    gateTitle:'سجّل بياناتك (اختياري)',
+    gateSub:'التسجيل مش شرط عشان تتفرج على الموقع، بس بيساعد المعلم يتابعك. املأ النموذج وبعدين اضغط "تم التسجيل".',
     gateSubmit:'تم التسجيل، رجوع للموقع', gateNote:'بياناتك بتتحفظ مباشرة في نموذج جوجل الخاص بمعلمك، ومش بتتشارك مع أي طرف تاني.',
     titlebarPath:'~/alhassan-shereif/برمجة_وذكاء_اصطناعي',
     navAbout:'👨‍🏫 عن المعلم', navCourses:'📚 الكورسات', navContact:'💬 تواصل', navCta:'./ابدأ_التعلم', navRegister:'تسجيل البيانات', navRegistered:'بياناتك متسجلة ✓',
@@ -868,7 +950,7 @@ const i18n = {
     solLabelLesson:'اختر الدرس', solLessonPlaceholder:'-- اختر الدرس --',
     solEmptyNote:'اختر درسًا لتشاهد حل واجبه.', solNoVideoNote:'لسه معملناش حل الواجب بتاع الدرس ده.',
     solNamePrompt:'اكتب اسمك الثلاثي الأول قبل ما تتفرج، عشان المعلم يقدر يتابع مين شاف الحل.', solWatchBtn:'مشاهدة الفيديو',
-    navResults:'📊 نتيجتي', resTitle:'نتيجتي', resSub:'اكتب كودك عشان تشوف كل درجاتك في الواجبات اللي سلّمتها.',
+    navResults:'📈 لوحتي', navRegisterBtn:'📝 سجّل', resTitle:'نتيجتي', resSub:'اكتب كودك عشان تشوف كل درجاتك في الواجبات اللي سلّمتها.',
     resSearchBtn:'استعلام', resMissingCode:'اكتب الكود الأول.', resSearching:'جارِ البحث...',
     resNoResults:'مفيش أي واجبات متسجلة بالكود ده لسه.', resNoMcq:'—', resError:'حصل خطأ، جرّب تاني.',
     hwTitle:'تسليم الواجب', hwSub:'املأ النموذج التالي عشان تسلّم واجبك، وبعد ما تخلّص تقدر تقفل الشاشة دي عادي.',
@@ -944,8 +1026,8 @@ const i18n = {
   },
   en: {
     brandName:'Eng. Alhassan Shereif', brandTag:'LEARN · BUILD · GROW',
-    gateTitle:'Register to get started',
-    gateSub:"Fill in the form below, then tap \"I've registered\" to return to the site.",
+    gateTitle:'Register (optional)',
+    gateSub:"Registering isn't required to browse the site, but it helps your teacher follow your progress. Fill in the form, then tap \"I've registered\".",
     gateSubmit:"I've registered — back to site", gateNote:"Your info goes straight into your teacher's Google Form and isn't shared with anyone else.",
     titlebarPath:'~/alhassan-shereif/programming_and_ai',
     navAbout:'👨‍🏫 About', navCourses:'📚 Courses', navContact:'💬 Contact', navCta:'./start_learning', navRegister:'Register', navRegistered:'Registered ✓',
@@ -954,7 +1036,7 @@ const i18n = {
     solLabelLesson:'Pick a lesson', solLessonPlaceholder:'-- Pick a lesson --',
     solEmptyNote:'Pick a lesson to watch its solution.', solNoVideoNote:"This lesson's solution isn't up yet.",
     solNamePrompt:'Enter your full name before watching, so your teacher can see who watched the solution.', solWatchBtn:'Watch video',
-    navResults:'📊 My Results', resTitle:'My Results', resSub:'Enter your code to see all your scores across the homework you\'ve submitted.',
+    navResults:'📈 My Dashboard', navRegisterBtn:'📝 Register', resTitle:'My Results', resSub:'Enter your code to see all your scores across the homework you\'ve submitted.',
     resSearchBtn:'Search', resMissingCode:'Enter your code first.', resSearching:'Searching...',
     resNoResults:'No homework found for this code yet.', resNoMcq:'—', resError:'Something went wrong, please try again.',
     hwTitle:'Submit Homework', hwSub:"Fill in the form below to submit your homework — once you're done, you can just close this.",
@@ -1070,6 +1152,7 @@ function applyI18n(lang){
     updateHwFileLabel(document.getElementById('hw-lesson').value);
   }
   if(document.getElementById('sol-lesson')) populateSolutionsLessonSelect();
+  updateRegisterNav();
 }
 
 document.getElementById('lang-toggle').addEventListener('click', ()=>{
@@ -1124,11 +1207,12 @@ function buildShieldedVideo(driveId, title){
   `;
 }
 
-function initShieldedVideos(container){
+function initShieldedVideos(container, lessonId){
   container.querySelectorAll('.video-wrap[data-drive-id]').forEach(wrap => {
     const poster = wrap.querySelector('.video-poster');
     if(!poster) return;
     poster.addEventListener('click', () => {
+      if(lessonId) logEvent('lesson_view', lessonId);
       const driveId = wrap.dataset.driveId;
       const title = wrap.dataset.videoTitle;
       /* Back to Google's own Drive preview player (not a raw direct-download
@@ -1476,10 +1560,10 @@ function renderLesson(lessonId){
       ${buildShieldedVideo(driveId, title)}
     </div>
   `;
-  initShieldedVideos(body);
+  initShieldedVideos(body, lessonId);
 }
 
-/* ---------- registration gate (Google Form embed, mandatory) ---------- */
+/* ---------- registration (Google Form embed) — now OPTIONAL, opened from the navbar ---------- */
 const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSdruxN9rIK0Jm2L9dU4TFOZ6vzf_HIJLzF4cUgyd0HZp7cFaA/viewform?embedded=true';
 
 const gateOverlay = document.getElementById('gate-overlay');
@@ -1487,30 +1571,13 @@ const gformFrame = document.getElementById('gform-frame');
 const siteContent = document.getElementById('site-content');
 const gateConfirm = document.getElementById('gate-confirm');
 
-function showSite(){
-  gateOverlay.style.display = 'none';
-  siteContent.style.display = 'block';
-
-  if(!document.getElementById('welcome-name')){
-    const strip = document.createElement('div');
-    strip.className = 'welcome-strip';
-    strip.innerHTML = `<span id="welcome-name">${i18n[currentLang].welcomeGeneric}</span><span class="signout" id="signout-btn">${i18n[currentLang].signOut}</span>`;
-    const main = document.getElementById('top');
-    main.insertBefore(strip, main.firstChild);
-    document.getElementById('signout-btn').addEventListener('click', ()=>{
-      localStorage.removeItem('as_registered');
-      location.reload();
-    });
-  }
-}
-
 gateConfirm.addEventListener('click', ()=>{
   try{ localStorage.setItem('as_registered', 'true'); }catch(e){}
-  showSite();
+  closeRegisterModal();
+  updateRegisterNav();
 });
 
 /* ---------- homework MCQ bank: 14 lessons x 25 questions each, options pre-shuffled ---------- */
-/* Each question: q = question text, o = 4 options (already scrambled vs the memo), c = index (0-3) of the correct option. */
 /* Each question: q = question text, o = 4 options (already scrambled vs the memo).
    NOTE: there is no "correct answer" field here anymore — grading now happens on
    the Apps Script server (see homework_apps_script.gs), which is the only place
@@ -1623,21 +1690,11 @@ function populateSolutionsLessonSelect(){
 function getStoredViewerName(){
   try{ return localStorage.getItem('as_viewer_name') || ''; }catch(e){ return ''; }
 }
-function setStoredViewerName(name){
-  try{ localStorage.setItem('as_viewer_name', name); }catch(e){}
+function getStoredViewerCode(){
+  try{ return localStorage.getItem('as_viewer_code') || ''; }catch(e){ return ''; }
 }
-
-/* Fire-and-forget: logs that someone watched a solution video. Never blocks
-   or gates playback — if this fails (network hiccup, script not deployed
-   yet) the video still plays, since the videos themselves stay fully free. */
-function logSolutionView(studentName, lessonId){
-  if(!HOMEWORK_SCRIPT_URL) return;
-  try{
-    fetch(HOMEWORK_SCRIPT_URL, {
-      method: 'POST',
-      body: JSON.stringify({ action: 'logView', studentName: studentName, lessonId: lessonId })
-    }).catch(() => {});
-  }catch(e){ /* ignore — viewing tracking is best-effort only */ }
+function setStoredViewer(name, code){
+  try{ localStorage.setItem('as_viewer_name', name); localStorage.setItem('as_viewer_code', code); }catch(e){}
 }
 
 function playSolutionVideo(lessonId, videoId){
@@ -1660,10 +1717,17 @@ function renderSolutionVideo(lessonId){
 
   if(videoId){
     emptyNote.style.display = 'none';
+    const who = getViewerIdentity();
+    if(who.verified){                      // already logged into the dashboard: no questions asked
+      logEvent('solution_view', lessonId, who);
+      playSolutionVideo(lessonId, videoId);
+      return;
+    }
     nameGate.style.display = 'block';
     nameGate.dataset.lessonId = lessonId;
     nameGate.dataset.videoId = videoId;
     document.getElementById('sol-name-input').value = getStoredViewerName();
+    document.getElementById('sol-code-input').value = getStoredViewerCode();
   } else {
     emptyNote.style.display = 'block';
     emptyNote.textContent = lessonId ? i18n[currentLang].solNoVideoNote : i18n[currentLang].solEmptyNote;
@@ -1674,13 +1738,14 @@ document.getElementById('sol-name-confirm').addEventListener('click', () => {
   const nameGate = document.getElementById('sol-name-gate');
   const nameInput = document.getElementById('sol-name-input');
   const name = nameInput.value.trim();
+  const code = document.getElementById('sol-code-input').value.trim();
   if(!name){
     nameInput.focus();
     nameInput.style.borderColor = '#e5555a';
     return;
   }
-  setStoredViewerName(name);
-  logSolutionView(name, nameGate.dataset.lessonId);
+  setStoredViewer(name, code);
+  logEvent('solution_view', nameGate.dataset.lessonId, { name: name, code: code });
   playSolutionVideo(nameGate.dataset.lessonId, nameGate.dataset.videoId);
 });
 
@@ -2111,27 +2176,520 @@ document.getElementById('nav-homework-2').addEventListener('click', openHomework
 document.getElementById('homework-close').addEventListener('click', closeHomeworkModal);
 document.getElementById('nav-solutions').addEventListener('click', openSolutionsModal);
 document.getElementById('solutions-close').addEventListener('click', closeSolutionsModal);
-document.getElementById('nav-results').addEventListener('click', openResultsModal);
 document.getElementById('results-close').addEventListener('click', closeResultsModal);
 homeworkOverlay.addEventListener('click', (e)=>{ if(e.target === homeworkOverlay) closeHomeworkModal(); });
 document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeHomeworkModal(); });
 
+/* =====================================================================
+   ACCOUNT: optional registration + student dashboard + admin dashboard
+   ===================================================================== */
+function getVerifiedStudent(){ try{ return JSON.parse(localStorage.getItem('as_student') || 'null'); }catch(e){ return null; } }
+function setVerifiedStudent(o){ try{ localStorage.setItem('as_student', JSON.stringify(o)); }catch(e){} }
+function clearVerifiedStudent(){ try{ localStorage.removeItem('as_student'); }catch(e){} }
+function getAdminSession(){ try{ return JSON.parse(sessionStorage.getItem('as_admin') || 'null'); }catch(e){ return null; } }
+
+/* who an activity (video view etc.) should be attributed to */
+function getViewerIdentity(){
+  const v = getVerifiedStudent();
+  if(v && v.name && v.code) return { name: v.name, code: v.code, verified: true };
+  let n = '', c = '';
+  try{ n = localStorage.getItem('as_viewer_name') || ''; c = localStorage.getItem('as_viewer_code') || ''; }catch(e){}
+  return { name: n, code: c, verified: false };
+}
+/* best-effort, never blocks anything */
+function logEvent(type, lessonId, who){
+  if(!HOMEWORK_SCRIPT_URL || !lessonId) return;
+  const id = who || getViewerIdentity();
+  try{
+    fetch(HOMEWORK_SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'logEvent', type: type, lessonId: lessonId, studentName: id.name || '', studentCode: id.code || '' })
+    }).catch(() => {});
+  }catch(e){}
+}
+async function dashApi(payload){
+  if(!HOMEWORK_SCRIPT_URL) return { status: 'error', message: 'not_configured' };
+  try{
+    const res = await fetch(HOMEWORK_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+    return await res.json();
+  }catch(e){ return { status: 'error', message: 'network' }; }
+}
+
+/* ---------- optional registration (Google Form) ---------- */
+function updateRegisterNav(){
+  const a = document.getElementById('nav-register');
+  if(!a) return;
+  let reg = false;
+  try{ reg = localStorage.getItem('as_registered') === 'true'; }catch(e){}
+  const d = i18n[currentLang];
+  a.textContent = reg ? d.navRegistered : d.navRegisterBtn;
+}
+function openRegisterModal(e){
+  if(e) e.preventDefault();
+  if(!gformFrame.getAttribute('src')) gformFrame.src = GOOGLE_FORM_URL;
+  gateOverlay.classList.add('open');
+}
+function closeRegisterModal(){ gateOverlay.classList.remove('open'); }
+
+/* ---------- small helpers ---------- */
+const DASH_LESSONS = () => curriculum.flatMap(u => u.lessons.map(l => ({ id: l.id, title: l.title_ar, unitId: u.id, unitTitle: u.title_ar })));
+const pctClass = p => p === null || p === undefined ? '' : (p >= 75 ? 'good' : (p >= 50 ? 'mid' : 'bad'));
+const pctColor = p => p === null || p === undefined ? '#3e3e74' : (p >= 75 ? '#3fbf6a' : (p >= 50 ? '#e0a83f' : '#e5555a'));
+const fmtPct = p => (p === null || p === undefined) ? '—' : Math.round(p) + '%';
+function fmtDate(ms){
+  if(!ms) return '—';
+  try{ return new Date(ms).toLocaleString('ar-EG', { timeZone: 'Africa/Cairo', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }); }
+  catch(e){ return new Date(ms).toLocaleString(); }
+}
+function relTime(ms){
+  if(!ms) return 'لسه ما دخلش';
+  const days = Math.floor((Date.now() - ms) / 86400000);
+  if(days <= 0) return 'النهاردة';
+  if(days === 1) return 'امبارح';
+  return 'من ' + days + ' يوم';
+}
+function daysSince(ms){ return ms ? Math.floor((Date.now() - ms) / 86400000) : Infinity; }
+function lessonLabel(lid){
+  const l = DASH_LESSONS().find(x => x.id === lid);
+  return lid + (l ? ' — ' + l.title : '');
+}
+const EVENT_LABELS = { hw_submit: '📮 سلّم واجب', lesson_view: '🎬 شاف فيديو الدرس', solution_view: '🎥 شاف حل الواجب', login: '🔑 دخل لوحته' };
+
+function ringSvg(pct, color){
+  const r = 34, c = 2 * Math.PI * r, off = c * (1 - Math.max(0, Math.min(100, pct)) / 100);
+  return `<svg width="86" height="86" viewBox="0 0 86 86"><circle cx="43" cy="43" r="${r}" fill="none" stroke="#25254a" stroke-width="9"/><circle cx="43" cy="43" r="${r}" fill="none" stroke="${color}" stroke-width="9" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}" transform="rotate(-90 43 43)"/><text x="43" y="48" text-anchor="middle" fill="#f1f0f7" font-size="16" font-weight="700">${Math.round(pct)}%</text></svg>`;
+}
+/* items: {label, value, text, color, mark, title}; max = scale top */
+function barsHtml(items, max){
+  if(!items.length) return '<div class="dash-empty">مفيش بيانات لسه.</div>';
+  return `<div class="chart-scroll"><div class="bars">${items.map(it => {
+    const h = max ? Math.max(0, Math.min(100, it.value / max * 100)) : 0;
+    const m = (it.mark !== null && it.mark !== undefined && max) ? Math.min(100, it.mark / max * 100) : null;
+    return `<div class="bar-col" title="${escapeHtml(it.title || '')}"><span class="b-val">${escapeHtml(String(it.text))}</span><div class="bar-area"><div class="bar" style="height:${h}%;background:${it.color}"></div>${m !== null ? `<div class="mark" style="bottom:${m}%"></div>` : ''}</div><div class="bar-lab">${escapeHtml(it.label)}</div></div>`;
+  }).join('')}</div></div>`;
+}
+
+/* ---------- dashboard modal shell ---------- */
+const dashOverlay = document.getElementById('dash-overlay');
+const dashBody = document.getElementById('dash-body');
+function closeDashboard(){ dashOverlay.classList.remove('open'); document.body.style.overflow = ''; }
+
+function openDashboardModal(e){
+  if(e) e.preventDefault();
+  dashOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  dashOverlay.scrollTop = 0;
+  if(getAdminSession()) return loadAdmin();
+  if(getVerifiedStudent()) return loadStudent();
+  renderDashLogin('');
+}
+
+function renderDashLogin(msg){
+  const v = getVerifiedStudent();
+  dashBody.innerHTML = `
+    <div class="dash-login">
+      <div style="font-size:38px; margin-bottom:6px;">📈</div>
+      <h2>لوحتي</h2>
+      <p class="dash-sub">اكتب اسمك وكودك عشان تشوف تقدمك: الواجبات اللي سلّمتها، درجاتك، والفيديوهات اللي شفتها.<br>
+      <b>الكود هو الأهم</b> — لو الاسم اتكتب بحرف مختلف شوية مفيش مشكلة.</p>
+      <input type="text" id="dash-name" class="mini-input" placeholder="الاسم الثلاثي" value="${escapeHtml(v ? v.name : '')}" style="margin-bottom:10px;">
+      <input type="password" id="dash-code" class="mini-input" dir="ltr" placeholder="الكود" autocomplete="off" style="margin-bottom:14px; text-align:center; letter-spacing:2px;">
+      <button type="button" class="btn-primary" id="dash-login-btn" style="width:100%;">دخول</button>
+      <div class="dash-err" id="dash-err">${escapeHtml(msg || '')}</div>
+      <p class="dash-sub" style="margin-top:10px;">لسه مسجلتش بياناتك على المنصة؟ <a href="#" id="dash-to-register" style="color:var(--mint);">سجّل من هنا</a></p>
+    </div>`;
+  const go = () => doLogin(document.getElementById('dash-name').value, document.getElementById('dash-code').value);
+  document.getElementById('dash-login-btn').addEventListener('click', go);
+  document.getElementById('dash-code').addEventListener('keydown', ev => { if(ev.key === 'Enter') go(); });
+  document.getElementById('dash-name').addEventListener('keydown', ev => { if(ev.key === 'Enter') document.getElementById('dash-code').focus(); });
+  document.getElementById('dash-to-register').addEventListener('click', ev => { closeDashboard(); openRegisterModal(ev); });
+}
+
+function renderDashLoading(text){
+  dashBody.innerHTML = `<div class="dash-login"><div class="dash-spin"></div><p class="dash-sub">${escapeHtml(text || 'جارِ التحميل...')}</p></div>`;
+}
+
+async function doLogin(name, code){
+  name = (name || '').trim(); code = (code || '').trim();
+  if(!name || !code){ renderDashLogin('اكتب الاسم والكود الأول.'); return; }
+  renderDashLoading('جارِ التحقق...');
+  const r = await dashApi({ action: 'login', name: name, code: code });
+  if(r.status === 'success' && r.role === 'admin'){
+    try{ sessionStorage.setItem('as_admin', JSON.stringify({ name: name, code: code })); }catch(e){}
+    return loadAdmin();
+  }
+  if(r.status === 'success' && r.role === 'student'){
+    setVerifiedStudent({ name: r.data.profile.name, code: r.data.profile.code });
+    return renderStudentDash(r.data, { self: true });
+  }
+  if(r.status === 'invalid_code') return renderDashLogin('الكود ده مش موجود. اتأكد منه وجرّب تاني.');
+  if(r.status === 'name_mismatch') return renderDashLogin('الكود صح، بس الاسم بعيد عن الاسم المسجّل. اكتب اسمك الثلاثي زي ما هو متسجل.');
+  if(r.message === 'network') return renderDashLogin('تعذّر الاتصال، اتأكد من النت وجرّب تاني.');
+  return renderDashLogin('حصلت مشكلة، جرّب تاني بعد شوية.');
+}
+
+async function loadStudent(){
+  const v = getVerifiedStudent();
+  if(!v){ return renderDashLogin(''); }
+  renderDashLoading('جارِ تحميل لوحتك...');
+  const r = await dashApi({ action: 'studentDashboard', name: v.name, code: v.code });
+  if(r.status === 'success' && r.role === 'student') return renderStudentDash(r.data, { self: true });
+  if(r.message === 'network') return renderDashLogin('تعذّر الاتصال، اتأكد من النت وجرّب تاني.');
+  clearVerifiedStudent();
+  renderDashLogin('محتاج تدخل بياناتك تاني.');
+}
+
+function dashLogout(){
+  clearVerifiedStudent();
+  try{ sessionStorage.removeItem('as_admin'); }catch(e){}
+  renderDashLogin('');
+}
+
+/* ---------- STUDENT DASHBOARD ---------- */
+function renderStudentDash(data, opts){
+  opts = opts || {};
+  const p = data.profile;
+  const lessons = DASH_LESSONS();
+  const cl = data.classLesson || {};
+  const released = lessons.filter(l => cl[l.id] && cl[l.id].submitted > 0);
+  const submittedLessons = Object.keys(p.hw || {});
+  const submittedReleased = released.filter(l => p.hw && p.hw[l.id]);
+  const missing = released.filter(l => !(p.hw && p.hw[l.id]));
+  const compPct = released.length ? submittedReleased.length / released.length * 100 : 0;
+  const lvCount = lessons.filter(l => p.lv && p.lv[l.id]).length;
+  const svCount = released.filter(l => p.sv && p.sv[l.id]).length;
+  const scored = submittedLessons.map(lid => ({ lid: lid, pct: (p.hw[lid].score !== null && p.hw[lid].total) ? p.hw[lid].score / p.hw[lid].total * 100 : null })).filter(x => x.pct !== null);
+  const sorted = scored.slice().sort((a, b) => a.pct - b.pct);
+
+  const insights = [];
+  if(!released.length) insights.push('لسه مفيش واجبات اتفتحت للتسليم.');
+  if(missing.length) insights.push(`📮 لسه ما سلّمتش واجب: <b>${missing.map(m => m.id).join('، ')}</b>.`);
+  else if(released.length) insights.push('✅ سلّمت كل الواجبات المتاحة، ممتاز!');
+  if(sorted.length && sorted[0].pct < 60) insights.push(`📉 أضعف درجة عندك في الدرس <b>${sorted[0].lid}</b> (${fmtPct(sorted[0].pct)}) — راجع الدرس وشوف فيديو حل الواجب بتاعه.`);
+  if(sorted.length > 1) insights.push(`🏆 أقوى درس عندك: <b>${sorted[sorted.length - 1].lid}</b> (${fmtPct(sorted[sorted.length - 1].pct)}).`);
+  const weakNoSol = scored.filter(x => x.pct < 70 && !(p.sv && p.sv[x.lid])).map(x => x.lid);
+  if(weakNoSol.length) insights.push(`🎥 درجاتك في <b>${weakNoSol.join('، ')}</b> أقل من 70% وما شفتش حل الواجب بتاعهم.`);
+  if(p.last && daysSince(p.last) >= 7) insights.push(`⏰ آخر نشاط ليك كان ${relTime(p.last)} — ارجع كمّل عشان ما تتأخرش.`);
+  if(p.viaName) insights.push(`ℹ️ ${p.viaName} تسليم اتسجل بكود غلط واتربط باسمك تلقائيًا — اكتب كودك صح المرة الجاية.`);
+
+  const chartItems = released.map(l => {
+    const h = p.hw && p.hw[l.id];
+    const pct = (h && h.score !== null && h.total) ? h.score / h.total * 100 : null;
+    return { label: l.id, value: pct || 0, text: h ? fmtPct(pct) : '—', color: pctColor(pct), mark: cl[l.id] ? cl[l.id].avgPct : null,
+             title: lessonLabel(l.id) + (cl[l.id] && cl[l.id].avgPct !== null ? ' — متوسط الفصل ' + fmtPct(cl[l.id].avgPct) : '') };
+  });
+
+  const unitBlocks = curriculum.map(u => `
+    <div class="dash-card">
+      <h3>${escapeHtml(u.title_ar)}</h3>
+      ${u.lessons.map(l => {
+        const h = p.hw && p.hw[l.id];
+        const isRel = cl[l.id] && cl[l.id].submitted > 0;
+        const pct = (h && h.score !== null && h.total) ? h.score / h.total * 100 : null;
+        const hwPill = h ? (pct !== null ? `<span class="pill ${pctClass(pct)}">📮 ${h.score}/${h.total} · ${fmtPct(pct)}</span>` : '<span class="pill good">📮 اتسلّم</span>')
+                         : (isRel ? '<span class="pill bad">📮 لم يُسلَّم</span>' : '<span class="pill">📮 لسه مفتحش</span>');
+        const tries = h && h.attempts > 1 ? `<span class="pill">محاولات: ${h.attempts}</span>` : '';
+        const lv = p.lv && p.lv[l.id] ? '<span class="pill good">🎬 اتشاف</span>' : '<span class="pill">🎬 —</span>';
+        const sv = p.sv && p.sv[l.id] ? '<span class="pill good">🎥 حل شاف</span>' : '<span class="pill">🎥 —</span>';
+        return `<div class="les-row"><span class="les-id">${l.id}</span><span class="les-title">${escapeHtml(l.title_ar)}</span>${hwPill}${tries}${lv}${sv}</div>`;
+      }).join('')}
+    </div>`).join('');
+
+  const events = (p.events || []).map(ev => `<div class="ev-row"><span>${EVENT_LABELS[ev.type] || ev.type} <b>${escapeHtml(ev.lessonId || '')}</b></span><span class="ev-time">${fmtDate(ev.ts)}</span></div>`).join('');
+
+  const avg = p.avg;
+  dashBody.innerHTML = `
+    <div class="dash-head">
+      <div class="dash-avatar">${escapeHtml((p.name || '?').trim().charAt(0))}</div>
+      <div class="who">
+        <h2>${escapeHtml(p.name)}</h2>
+        <span class="chip">كود: ${escapeHtml(p.code)}</span>
+        ${p.grade ? `<span class="chip">${escapeHtml(p.grade)}</span>` : ''}
+        ${p.subject ? `<span class="chip">${escapeHtml(p.subject)}</span>` : ''}
+        <span class="chip">آخر نشاط: ${relTime(p.last)}</span>
+      </div>
+      <div class="dash-actions">
+        ${opts.admin ? '<button class="dash-btn" id="dash-back">← رجوع لقائمة الطلاب</button>' :
+          '<button class="dash-btn" id="dash-refresh">🔄 تحديث</button><button class="dash-btn" id="dash-logout">خروج</button>'}
+      </div>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi" style="display:flex; align-items:center; gap:12px;">${ringSvg(compPct, pctColor(released.length ? compPct : null))}<div><div class="k-label">إنجاز الواجبات</div><div class="k-val" style="font-size:19px;">${submittedReleased.length} / ${released.length}</div></div></div>
+      <div class="kpi"><div class="k-label">متوسط درجاتك</div><div class="k-val ${pctClass(avg)}">${fmtPct(avg)}</div><div class="k-sub">من أول محاولة في كل واجب</div></div>
+      <div class="kpi"><div class="k-label">ترتيبك في الفصل</div><div class="k-val">${data.rank ? '#' + data.rank : '—'}</div><div class="k-sub">${data.rank ? `من ${data.ranked} · أعلى من ${data.percentile}% من زمايلك` : 'سلّم واجب عشان يظهر ترتيبك'}</div></div>
+      <div class="kpi"><div class="k-label">فيديوهات الدروس</div><div class="k-val">${lvCount}</div><div class="k-sub">من ${lessons.length} درس</div></div>
+      <div class="kpi"><div class="k-label">حلول الواجبات</div><div class="k-val">${svCount}</div><div class="k-sub">من ${released.length} حل متاح</div></div>
+    </div>
+
+    <div class="dash-card"><h3>💡 ملخص وتوصيات</h3><ul class="insights">${insights.map(i => `<li>${i}</li>`).join('')}</ul></div>
+
+    <div class="dash-card"><h3>📊 درجاتك في كل واجب <span class="legend"><i class="lg-bar"></i> درجتك &nbsp; <i class="lg-mark"></i> متوسط الفصل</span></h3>${barsHtml(chartItems, 100)}</div>
+
+    ${unitBlocks}
+
+    <div class="dash-card"><h3>🕘 آخر نشاط</h3>${events || '<div class="dash-empty">مفيش نشاط مسجل لسه.</div>'}</div>
+  `;
+  if(opts.admin){
+    document.getElementById('dash-back').addEventListener('click', opts.onBack);
+  } else {
+    document.getElementById('dash-refresh').addEventListener('click', loadStudent);
+    document.getElementById('dash-logout').addEventListener('click', dashLogout);
+  }
+}
+
+/* ---------- ADMIN DASHBOARD ---------- */
+let adminModel = null;
+let adminTab = 'overview';
+let adminUi = { search: '', sort: 'name', filter: 'all' };
+
+async function loadAdmin(){
+  const s = getAdminSession();
+  if(!s){ return renderDashLogin(''); }
+  renderDashLoading('جارِ تحميل لوحة التحكم...');
+  const r = await dashApi({ action: 'adminData', name: s.name, code: s.code });
+  if(r.status === 'success'){
+    adminModel = prepareAdminModel(r);
+    adminTab = 'overview';
+    return renderAdminDash();
+  }
+  try{ sessionStorage.removeItem('as_admin'); }catch(e){}
+  renderDashLogin(r.message === 'network' ? 'تعذّر الاتصال، جرّب تاني.' : 'بيانات الدخول مش صحيحة.');
+}
+
+function prepareAdminModel(r){
+  const lessons = DASH_LESSONS();
+  const m = { raw: r, students: r.students, lessonStats: r.lessonStats || {}, items: r.items || {}, lessons: lessons };
+  m.released = lessons.filter(l => m.lessonStats[l.id] && m.lessonStats[l.id].submitted > 0);
+  m.students.forEach(s => {
+    s.missing = m.released.filter(l => !(s.hw && s.hw[l.id])).length;
+    s.lvCount = Object.keys(s.lv || {}).length;
+    s.svCount = Object.keys(s.sv || {}).length;
+    s.idleDays = daysSince(s.last);
+  });
+  const scored = m.students.filter(s => s.avg !== null && s.avg !== undefined);
+  m.avgAll = scored.length ? scored.reduce((a, s) => a + s.avg, 0) / scored.length : null;
+  m.scored = scored;
+  return m;
+}
+
+function adminKpis(m){
+  const N = m.students.length;
+  const any = m.students.filter(s => s.submittedCount > 0).length;
+  const totalSubs = Object.keys(m.lessonStats).reduce((a, k) => a + m.lessonStats[k].submitted, 0);
+  const idle = m.students.filter(s => s.idleDays >= 14).length;
+  const sol = Object.keys(m.lessonStats).reduce((a, k) => a + m.lessonStats[k].solutionViewers, 0);
+  return `<div class="kpi-grid">
+    <div class="kpi"><div class="k-label">عدد الطلاب</div><div class="k-val">${N}</div><div class="k-sub">${m.raw.hasRoster ? 'من قائمة الطلاب (Roster)' : '⚠️ مفيش تاب Roster — الطلاب مستنتجين من البيانات'}</div></div>
+    <div class="kpi"><div class="k-label">سلّموا واجب واحد على الأقل</div><div class="k-val">${any}</div><div class="k-sub">${N ? Math.round(any / N * 100) : 0}% من الطلاب</div></div>
+    <div class="kpi"><div class="k-label">متوسط الدرجات العام</div><div class="k-val ${pctClass(m.avgAll)}">${fmtPct(m.avgAll)}</div><div class="k-sub">أول محاولة لكل طالب</div></div>
+    <div class="kpi"><div class="k-label">إجمالي التسليمات</div><div class="k-val">${totalSubs}</div><div class="k-sub">${m.released.length} واجب مفتوح</div></div>
+    <div class="kpi"><div class="k-label">مشاهدين حلول الواجبات</div><div class="k-val">${sol}</div><div class="k-sub">مجموع (طالب × حل)</div></div>
+    <div class="kpi"><div class="k-label">خاملين +14 يوم</div><div class="k-val ${idle ? 'bad' : 'good'}">${idle}</div><div class="k-sub">أو ما دخلوش خالص</div></div>
+  </div>`;
+}
+
+function renderAdminDash(){
+  const m = adminModel;
+  const tabs = [['overview', '📊 نظرة عامة'], ['students', '👥 الطلاب'], ['matrix', '🧮 مصفوفة الواجبات'], ['lessons', '📚 الدروس'], ['alerts', '🚨 تنبيهات']];
+  dashBody.innerHTML = `
+    <div class="dash-head">
+      <div class="dash-avatar">👨‍🏫</div>
+      <div class="who"><h2>لوحة تحكم المعلم</h2><span class="chip">آخر تحديث: ${fmtDate(m.raw.generatedAt)}</span></div>
+      <div class="dash-actions"><button class="dash-btn" id="adm-refresh">🔄 تحديث</button><button class="dash-btn" id="adm-logout">خروج</button></div>
+    </div>
+    ${adminKpis(m)}
+    <div class="dash-tabs">${tabs.map(t => `<button class="dash-tab ${adminTab === t[0] ? 'active' : ''}" data-tab="${t[0]}">${t[1]}</button>`).join('')}</div>
+    <div id="adm-content"></div>`;
+  document.getElementById('adm-refresh').addEventListener('click', loadAdmin);
+  document.getElementById('adm-logout').addEventListener('click', dashLogout);
+  dashBody.querySelectorAll('.dash-tab').forEach(b => b.addEventListener('click', () => { adminTab = b.dataset.tab; renderAdminDash(); }));
+  const c = document.getElementById('adm-content');
+  if(adminTab === 'overview') c.innerHTML = adminOverviewHtml(m);
+  if(adminTab === 'students'){ c.innerHTML = adminStudentsHtml(m); bindAdminStudents(m); }
+  if(adminTab === 'matrix'){ c.innerHTML = adminMatrixHtml(m); document.getElementById('adm-export').addEventListener('click', () => exportAdminCsv(m)); }
+  if(adminTab === 'lessons') c.innerHTML = adminLessonsHtml(m);
+  if(adminTab === 'alerts') c.innerHTML = adminAlertsHtml(m);
+}
+
+function adminOverviewHtml(m){
+  const N = m.students.length || 1;
+  const subItems = m.released.map(l => { const st = m.lessonStats[l.id]; const p = st.submitted / N * 100; return { label: l.id, value: p, text: Math.round(p) + '%', color: '#45a9a9', title: lessonLabel(l.id) + ' — ' + st.submitted + ' طالب' }; });
+  const avgItems = m.released.map(l => { const st = m.lessonStats[l.id]; return { label: l.id, value: st.avgPct || 0, text: fmtPct(st.avgPct), color: pctColor(st.avgPct), title: lessonLabel(l.id) }; });
+  const days = [];
+  for(let i = 29; i >= 0; i--){
+    const d = new Date(Date.now() - i * 86400000);
+    const key = new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Cairo', year: 'numeric', month: '2-digit', day: '2-digit' }).format(d);
+    days.push({ key: key, n: (m.raw.daily && m.raw.daily[key]) || 0, lab: key.slice(8) });
+  }
+  const maxDay = Math.max(1, ...days.map(d => d.n));
+  const dayItems = days.map(d => ({ label: d.lab, value: d.n, text: d.n || '', color: '#7c3fae', title: d.key + ' — ' + d.n + ' نشاط' }));
+  const top = m.scored.slice().sort((a, b) => b.avg - a.avg).slice(0, 5);
+  const bottom = m.scored.slice().sort((a, b) => a.avg - b.avg).slice(0, 5);
+  const list = arr => arr.map(s => `<div class="ev-row"><span>${escapeHtml(s.name)}</span><span class="${pctClass(s.avg)}"><b>${fmtPct(s.avg)}</b></span></div>`).join('') || '<div class="dash-empty">—</div>';
+  return `
+    <div class="dash-card"><h3>📮 نسبة التسليم لكل واجب (من إجمالي الطلاب)</h3>${barsHtml(subItems, 100)}</div>
+    <div class="dash-card"><h3>🎯 متوسط الدرجات لكل واجب</h3>${barsHtml(avgItems, 100)}</div>
+    <div class="dash-card"><h3>📈 النشاط اليومي (آخر 30 يوم)</h3>${barsHtml(dayItems, maxDay)}</div>
+    <div class="two-col"><div class="dash-card"><h3>🏆 أعلى 5 متوسطًا</h3>${list(top)}</div><div class="dash-card"><h3>📉 أقل 5 متوسطًا</h3>${list(bottom)}</div></div>`;
+}
+
+function studentStatus(s, m){
+  if(!m.released.length) return ['—', ''];
+  if(s.submittedCount === 0) return ['لم يسلّم', 'bad'];
+  if(s.avg !== null && s.avg < 50) return ['ضعيف', 'bad'];
+  if(s.missing >= Math.ceil(m.released.length / 2)) return ['متأخر', 'mid'];
+  if(s.missing === 0) return ['ملتزم', 'good'];
+  return ['متابعة', 'mid'];
+}
+function adminStudentsHtml(m){
+  return `
+    <div class="adm-controls">
+      <input type="text" id="adm-search" class="mini-input" placeholder="🔍 ابحث بالاسم أو الكود" value="${escapeHtml(adminUi.search)}">
+      <select id="adm-sort" class="mini-input">
+        <option value="name">ترتيب: الاسم</option><option value="recent">الأحدث نشاطًا</option><option value="missing">الأكثر تأخرًا</option>
+        <option value="low">الأقل متوسطًا</option><option value="high">الأعلى متوسطًا</option>
+      </select>
+      <select id="adm-filter" class="mini-input">
+        <option value="all">الكل</option><option value="none">لم يسلّم أي واجب</option><option value="late">متأخر في الواجبات</option>
+        <option value="weak">ضعيف (&lt;50%)</option><option value="idle">خامل +14 يوم</option>
+      </select>
+    </div>
+    <div class="table-scroll"><table class="dash-table" id="adm-table"></table></div>`;
+}
+function bindAdminStudents(m){
+  const sortEl = document.getElementById('adm-sort'), filtEl = document.getElementById('adm-filter'), searchEl = document.getElementById('adm-search');
+  sortEl.value = adminUi.sort; filtEl.value = adminUi.filter;
+  const draw = () => {
+    adminUi.search = searchEl.value; adminUi.sort = sortEl.value; adminUi.filter = filtEl.value;
+    const q = normalizeArabicLite(adminUi.search);
+    let rows = m.students.map((s, i) => ({ s: s, i: i })).filter(x => {
+      if(q && !(normalizeArabicLite(x.s.name).includes(q) || String(x.s.code).toLowerCase().includes(q))) return false;
+      if(adminUi.filter === 'none') return x.s.submittedCount === 0;
+      if(adminUi.filter === 'late') return x.s.missing > 0 && x.s.submittedCount > 0;
+      if(adminUi.filter === 'weak') return x.s.avg !== null && x.s.avg < 50;
+      if(adminUi.filter === 'idle') return x.s.idleDays >= 14;
+      return true;
+    });
+    const by = {
+      name: (a, b) => a.s.name.localeCompare(b.s.name, 'ar'),
+      recent: (a, b) => (b.s.last || 0) - (a.s.last || 0),
+      missing: (a, b) => b.s.missing - a.s.missing,
+      low: (a, b) => (a.s.avg === null ? 999 : a.s.avg) - (b.s.avg === null ? 999 : b.s.avg),
+      high: (a, b) => (b.s.avg === null ? -1 : b.s.avg) - (a.s.avg === null ? -1 : a.s.avg)
+    };
+    rows.sort(by[adminUi.sort] || by.name);
+    document.getElementById('adm-table').innerHTML = `
+      <thead><tr><th>#</th><th>الطالب</th><th>الكود</th><th>التسليم</th><th>المتوسط</th><th>🎬</th><th>🎥</th><th>آخر نشاط</th><th>الحالة</th></tr></thead>
+      <tbody>${rows.map((x, n) => { const s = x.s; const st = studentStatus(s, m);
+        return `<tr class="clickable" data-i="${x.i}"><td>${n + 1}</td><td><b>${escapeHtml(s.name)}</b></td><td dir="ltr">${escapeHtml(String(s.code))}</td>
+        <td>${s.submittedCount}/${m.released.length}</td><td class="${pctClass(s.avg)}"><b>${fmtPct(s.avg)}</b></td><td>${s.lvCount}</td><td>${s.svCount}</td>
+        <td>${relTime(s.last)}</td><td><span class="pill ${st[1]}">${st[0]}</span></td></tr>`; }).join('') || '<tr><td colspan="9" class="dash-empty">مفيش نتائج.</td></tr>'}</tbody>`;
+    document.querySelectorAll('#adm-table tr.clickable').forEach(tr => tr.addEventListener('click', () => openAdminStudent(m, +tr.dataset.i)));
+  };
+  [sortEl, filtEl].forEach(el => el.addEventListener('change', draw));
+  searchEl.addEventListener('input', draw);
+  draw();
+}
+function normalizeArabicLite(s){
+  return String(s || '').toLowerCase().replace(/[\u064B-\u065F\u0640]/g, '').replace(/[أإآ]/g, 'ا').replace(/ى/g, 'ي').replace(/ة/g, 'ه').trim();
+}
+function openAdminStudent(m, idx){
+  const s = m.students[idx];
+  const cl = {};
+  Object.keys(m.lessonStats).forEach(k => { cl[k] = { avgPct: m.lessonStats[k].avgPct, submitted: m.lessonStats[k].submitted }; });
+  const better = m.scored.filter(x => x.avg > s.avg).length, lower = m.scored.filter(x => x.avg < s.avg).length;
+  const has = s.avg !== null && s.avg !== undefined;
+  renderStudentDash({ profile: s, classLesson: cl, rank: has ? better + 1 : null, ranked: m.scored.length,
+                      percentile: has && m.scored.length ? Math.round(lower / m.scored.length * 100) : null },
+                    { admin: true, onBack: () => { renderAdminDash(); dashOverlay.scrollTop = 0; } });
+  dashOverlay.scrollTop = 0;
+}
+
+function adminMatrixHtml(m){
+  const cols = m.released;
+  if(!cols.length) return '<div class="dash-empty">لسه مفيش تسليمات.</div>';
+  const rows = m.students.slice().sort((a, b) => a.name.localeCompare(b.name, 'ar')).map(s => {
+    const cells = cols.map(l => { const h = s.hw && s.hw[l.id]; if(!h) return '<td class="cell-miss">❌</td>';
+      const p = (h.score !== null && h.total) ? h.score / h.total * 100 : null;
+      return `<td class="cell-ok ${pctClass(p)}" title="${escapeHtml(lessonLabel(l.id))}">${p === null ? '✅' : Math.round(p)}</td>`; }).join('');
+    return `<tr><td><b>${escapeHtml(s.name)}</b></td>${cells}<td class="${s.missing ? 'bad' : 'good'}"><b>${s.missing}</b></td></tr>`;
+  }).join('');
+  return `<div class="adm-controls"><button class="dash-btn" id="adm-export">⬇️ تصدير CSV (Excel)</button><span class="dash-sub" style="margin:0;">الأرقام = درجة أول محاولة (%) · ❌ = لم يُسلَّم</span></div>
+    <div class="table-scroll"><table class="dash-table matrix"><thead><tr><th>الطالب</th>${cols.map(l => `<th title="${escapeHtml(lessonLabel(l.id))}">${l.id}</th>`).join('')}<th>ناقص</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+function exportAdminCsv(m){
+  const cols = m.released;
+  const head = ['الاسم', 'الكود', 'واجبات مسلّمة', 'متوسط %', 'فيديوهات دروس', 'حلول شافها', 'آخر نشاط'].concat(cols.map(l => 'واجب ' + l.id));
+  const lines = [head].concat(m.students.map(s => [s.name, s.code, s.submittedCount, s.avg === null ? '' : Math.round(s.avg), s.lvCount, s.svCount, s.last ? new Date(s.last).toISOString().slice(0, 10) : '']
+    .concat(cols.map(l => { const h = s.hw && s.hw[l.id]; return h ? (h.score !== null && h.total ? Math.round(h.score / h.total * 100) : 'سلّم') : 'لم يسلّم'; }))));
+  const csv = '\ufeff' + lines.map(r => r.map(v => '"' + String(v).replace(/"/g, '""') + '"').join(',')).join('\r\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+  a.download = 'student-progress.csv';
+  document.body.appendChild(a); a.click(); a.remove();
+}
+
+function adminLessonsHtml(m){
+  const N = m.students.length || 1;
+  const cards = m.lessons.filter(l => m.lessonStats[l.id]).map(l => {
+    const st = m.lessonStats[l.id];
+    const items = m.items[l.id] || [];
+    const bank = HOMEWORK_BANK[l.id] || [];
+    const hardest = items.map((p, i) => ({ p: p, i: i })).filter(x => x.p !== null).sort((a, b) => a.p - b.p).slice(0, 3);
+    const notSub = m.students.filter(s => !(s.hw && s.hw[l.id])).map(s => s.name);
+    return `<div class="dash-card"><h3>${escapeHtml(lessonLabel(l.id))}</h3>
+      <div class="mini-stats">
+        <span class="pill">📮 تسليم: <b>${st.submitted}</b> (${Math.round(st.submitted / N * 100)}%)</span>
+        <span class="pill ${pctClass(st.avgPct)}">🎯 المتوسط: <b>${fmtPct(st.avgPct)}</b></span>
+        <span class="pill">🎬 شاهدوا الدرس: <b>${st.lessonViewers}</b></span>
+        <span class="pill">🎥 شاهدوا الحل: <b>${st.solutionViewers}</b></span>
+      </div>
+      ${hardest.length ? `<div class="hard"><b>أصعب الأسئلة (نسبة الإجابة الصحيحة):</b>${hardest.map(h => `<div class="ev-row"><span>س${h.i + 1}: ${escapeHtml(((bank[h.i] || {}).q || '').slice(0, 110))}</span><span class="${pctClass(h.p)}"><b>${h.p}%</b></span></div>`).join('')}</div>` : ''}
+      ${notSub.length && st.submitted ? `<details><summary>لم يسلّموا (${notSub.length})</summary><div class="name-cloud">${notSub.map(n => `<span class="chip">${escapeHtml(n)}</span>`).join('')}</div></details>` : ''}
+    </div>`;
+  }).join('');
+  return cards || '<div class="dash-empty">لسه مفيش بيانات للدروس.</div>';
+}
+
+function adminAlertsHtml(m){
+  const rel = m.released.length;
+  const none = m.students.filter(s => s.submittedCount === 0);
+  const late = m.students.filter(s => rel && s.submittedCount > 0 && s.missing >= Math.ceil(rel / 2));
+  const weak = m.students.filter(s => s.avg !== null && s.avg < 50);
+  const idle = m.students.filter(s => s.idleDays >= 14);
+  const viaName = m.students.filter(s => s.viaName > 0);
+  const um = m.raw.unmatched || [];
+  const cloud = arr => `<div class="name-cloud">${arr.map(s => `<span class="chip">${escapeHtml(s.name)}</span>`).join('')}</div>`;
+  const block = (title, arr, note) => `<details class="dash-card" ${arr.length ? 'open' : ''}><summary><b>${title}</b> <span class="pill ${arr.length ? 'bad' : 'good'}">${arr.length}</span></summary>${note ? `<p class="dash-sub" style="margin:8px 0;">${note}</p>` : ''}${arr.length ? cloud(arr) : '<div class="dash-empty">✔️ تمام.</div>'}</details>`;
+  return `
+    ${block('لم يسلّموا أي واجب', none, rel ? '' : 'مفيش واجبات اتفتحت لسه.')}
+    ${block('متأخرين (ناقصهم نص الواجبات أو أكتر)', late)}
+    ${block('أداء ضعيف (متوسط أقل من 50%)', weak)}
+    ${block('خاملين 14 يوم أو أكتر (أو ما دخلوش)', idle)}
+    ${block('تسليمات اتربطت بالاسم (الكود كان غلط)', viaName, 'الطالب ده كتب كود غلط، والنظام عرفه من اسمه. نبّهه يكتب الكود صح.')}
+    <details class="dash-card" ${um.length ? 'open' : ''}><summary><b>تسليمات مش معروف صاحبها</b> <span class="pill ${um.length ? 'bad' : 'good'}">${um.length}</span></summary>
+      <p class="dash-sub" style="margin:8px 0;">كود غلط/فاضي واسم مش قريب من أي طالب في القائمة. راجعها في تاب Homework وكلّم الطالب.</p>
+      ${um.length ? `<div class="table-scroll"><table class="dash-table"><thead><tr><th>الوقت</th><th>الاسم المكتوب</th><th>الكود المكتوب</th><th>الدرس</th><th>الدرجة</th></tr></thead><tbody>${um.map(u => `<tr><td>${fmtDate(u.ts)}</td><td>${escapeHtml(u.name)}</td><td dir="ltr">${escapeHtml(u.code)}</td><td>${escapeHtml(u.lessonId)}</td><td>${u.score !== '' && u.total ? escapeHtml(u.score + '/' + u.total) : '—'}</td></tr>`).join('')}</tbody></table></div>` : '<div class="dash-empty">✔️ كل التسليمات معروفة.</div>'}
+    </details>`;
+}
+
+/* ---------- wiring ---------- */
+document.getElementById('nav-register').addEventListener('click', openRegisterModal);
+document.getElementById('gate-close').addEventListener('click', closeRegisterModal);
+document.getElementById('nav-results').addEventListener('click', openDashboardModal);
+document.getElementById('dash-close').addEventListener('click', closeDashboard);
+document.addEventListener('keydown', ev => { if(ev.key === 'Escape'){ closeDashboard(); closeRegisterModal(); } });
+
 /* ---------- init ---------- */
 (async function init(){
+  applyI18n('ar');          // the site opens immediately — no registration wall anymore
   await loadLessonVideos();
   await loadSubscribers();
   await loadHomeworkStatus();
   await loadLessonLockStatus();
   await loadHomeworkSolutions();
-  applyI18n('ar');
-  let alreadyRegistered = false;
-  try{ alreadyRegistered = localStorage.getItem('as_registered') === 'true'; }catch(e){}
-
-  if(alreadyRegistered){
-    showSite();
-  } else {
-    gformFrame.src = GOOGLE_FORM_URL;
-  }
+  applyI18n(currentLang);   // re-render once the sheets have loaded
 
   const floatingWa = document.getElementById('floating-whatsapp');
   window.addEventListener('scroll', () => {
