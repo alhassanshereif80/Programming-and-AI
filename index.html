@@ -2325,7 +2325,7 @@ async function doLogin(name, code){
   if(r.status === 'invalid_code') return renderDashLogin('الكود ده مش موجود. اتأكد منه وجرّب تاني.');
   if(r.status === 'name_mismatch') return renderDashLogin('الكود صح، بس الاسم بعيد عن الاسم المسجّل. اكتب اسمك الثلاثي زي ما هو متسجل.');
   if(r.message === 'network') return renderDashLogin('تعذّر الاتصال، اتأكد من النت وجرّب تاني.');
-  return renderDashLogin('حصلت مشكلة، جرّب تاني بعد شوية.');
+  return renderDashLogin(describeServerProblem(r));
 }
 
 async function loadStudent(){
@@ -2336,7 +2336,18 @@ async function loadStudent(){
   if(r.status === 'success' && r.role === 'student') return renderStudentDash(r.data, { self: true });
   if(r.message === 'network') return renderDashLogin('تعذّر الاتصال، اتأكد من النت وجرّب تاني.');
   clearVerifiedStudent();
-  renderDashLogin('محتاج تدخل بياناتك تاني.');
+  renderDashLogin(r.status === 'error' || (r.status === 'success' && !r.role) ? describeServerProblem(r) : 'محتاج تدخل بياناتك تاني.');
+}
+
+/* turns an unexpected server reply into a message that says what is actually wrong */
+function describeServerProblem(r){
+  if(r && r.status === 'success' && !r.role && !r.students){
+    return 'الـ Apps Script على جوجل لسه على النسخة القديمة (مفيهاش اللوحات). حدّث الكود وعمل Deploy → Manage deployments → New version.';
+  }
+  if(r && r.status === 'forbidden') return 'بيانات دخول المعلم مش صحيحة.';
+  if(r && r.status === 'error' && r.message && r.message !== 'not_configured') return 'السيرفر رجّع خطأ: ' + r.message;
+  if(r && r.message === 'not_configured') return 'رابط الـ Apps Script مش متظبط في الموقع.';
+  return 'حصلت مشكلة غير متوقعة، جرّب تاني بعد شوية.';
 }
 
 function dashLogout(){
@@ -2448,13 +2459,13 @@ async function loadAdmin(){
   if(!s){ return renderDashLogin(''); }
   renderDashLoading('جارِ تحميل لوحة التحكم...');
   const r = await dashApi({ action: 'adminData', name: s.name, code: s.code });
-  if(r.status === 'success'){
+  if(r.status === 'success' && Array.isArray(r.students)){
     adminModel = prepareAdminModel(r);
     adminTab = 'overview';
     return renderAdminDash();
   }
   try{ sessionStorage.removeItem('as_admin'); }catch(e){}
-  renderDashLogin(r.message === 'network' ? 'تعذّر الاتصال، جرّب تاني.' : 'بيانات الدخول مش صحيحة.');
+  renderDashLogin(r.message === 'network' ? 'تعذّر الاتصال، جرّب تاني.' : describeServerProblem(r));
 }
 
 function prepareAdminModel(r){
